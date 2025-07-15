@@ -1,0 +1,153 @@
+﻿@model DotNetTruyen.ViewModels.Management.EditLevelViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa cấp độ";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="chapter-container">
+        <div class="chapter-header">
+            <h2 class="h4 mb-0 text-white"><i class="fas fa-star me-2 text-white"></i> Chỉnh Sửa Cấp Độ</h2>
+        </div>
+        <div class="chapter-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <form asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <!-- Thông tin Cấp độ -->
+                <div class="chapter-section">
+                    <h4 class="section-title"><i class="fas fa-info-circle me-2"></i> Thông tin Cấp độ</h4>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Số Cấp độ</label>
+                            <input asp-for="LevelNumber" type="number" class="form-control modern-input" placeholder="VD: 1" min="0" />
+                            <span asp-validation-for="LevelNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Tên Cấp độ</label>
+                            <input asp-for="Name" class="form-control modern-input" placeholder="VD: Cấp 1" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-bold">Kinh nghiệm yêu cầu</label>
+                            <input asp-for="ExpRequired" type="number" class="form-control modern-input" placeholder="VD: 100" min="0" />
+                            <span asp-validation-for="ExpRequired" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="action-buttons mt-4">
+                    <a asp-action="Index" asp-controller="Levels" class="btn btn-outline-custom">
+                        <i class="fas fa-arrow-left me-2"></i> Quay lại
+                    </a>
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="fas fa-save me-2"></i> Lưu Cấp độ
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+@section Styles {
+    <style>
+        /* Container chính */
+        .chapter-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .chapter-header {
+            background: linear-gradient(90deg, #0061F7 0%, #224abe 100%);
+            color: #fff;
+            padding: 15px 25px;
+            border-bottom: 4px solid #1c3faa;
+            text-align: center;
+        }
+
+        .chapter-body {
+            padding: 30px;
+        }
+
+        /* Section */
+        .chapter-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 6px solid #4e73df;
+        }
+
+        .section-title {
+            color: #4e73df;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        /* Input */
+        .modern-input {
+            border: none;
+            border-bottom: 2px solid #d1d3e2;
+            border-radius: 0;
+            padding: 10px 5px;
+            background: transparent;
+            transition: border-color 0.3s ease;
+        }
+
+            .modern-input:focus {
+                border-bottom-color: #4e73df;
+                box-shadow: none;
+                outline: none;
+            }
+
+        /* Nút */
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-outline-custom {
+            padding: 10px 25px;
+            border: 2px solid #858796;
+            color: #858796;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-outline-custom:hover {
+                background: #858796;
+                color: #fff;
+            }
+
+        .btn-primary-custom {
+            padding: 10px 25px;
+            background: linear-gradient(90deg, #4e73df 0%, #224abe 100%);
+            border: none;
+            color: #fff;
+            border-radius: 50px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary-custom:hover {
+                background: linear-gradient(90deg, #224abe 0%, #1c3faa 100%);
+            }
+    </style>
+}

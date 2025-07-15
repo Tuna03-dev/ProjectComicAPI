@@ -1,0 +1,159 @@
+﻿@using DotNetTruyen.Services
+@using DotNetTruyen.ViewModels
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@model DotNetTruyen.ViewModels.ReadHistoryViewModel
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+    var user = await UserManager.GetUserAsync(User);
+}
+<body class="page-template-default page page-id-7 logged-in wp-embed-responsive header-style-1 sticky-enabled sticky-style-1 text-ui-light minimal-reading-layout">
+    <div class="wrap">
+        <div class="body-wrap">
+            <partial name="_HeaderPartial" />
+            <div class="site-content">
+
+                <div class="c-page-content style-2">
+                    <div class="content-area ">
+                        <div class="container">
+
+                            <div class="row ">
+
+                                <div class="col-md-12 col-sm-12">
+
+                                    <!-- Quang cao
+                                        <div class="ad c-ads custom-code body-top-ads"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/Build-The-Best-Manga-Site.jpg" /></a></div>
+                                    -->
+
+
+                                    <div class="main-col-inner">
+
+                                        <div id="post-7" class="c-blog-post post-7 page type-page status-publish hentry">
+                                            <div class="entry-header">
+                                                <div class="entry-header_wrap">
+                                                    <div class="entry-title">
+                                                        <h1 class="item-title h2">Lịch sử đọc truyện</h1>
+                                                    </div>
+
+                                                    <!--<div class="entry-meta">                <div class="post-on">
+                                                                                                    <span class="font-meta">posted on</span>
+                                                                                                    <div class="c-blog__date">
+
+                                                                                                        <span class="posted-on"> <a href="https://live.mangabooth.com/x/user-settings/" rel="bookmark">October 8, 2024</a></span>
+                                                                                                        <span class="post-category"><br /></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            <div class="post-meta total-count font-meta"></div></div>        </div>-->
+                                                </div>
+
+
+
+                                                <div class="entry-content">
+                                                    <div class="entry-content_wrap">
+
+                                                        <div class="row settings-page">
+                                                            <partial name="_UserSettingPartial" />
+                                                            <div class="col-md-9 col-sm-9">
+                                                                <div class="tabs-content-wrap">
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane active">
+
+                                                                            <div class="tab-group-item">
+
+
+                                                                                <div class="tab-item">
+                                                                                    <div class="row">
+                                                                                        @foreach (var history in Model.ReadHistories)
+                                                                                        {
+                                                                                            <div class="col-md-4">
+                                                                                                <div class="history-content">
+                                                                                                    <div class="item-thumb">
+                                                                                                        <a href="Detail/Index/@history.Chapter.Comic.Id" title="@history.Chapter.Comic.Title">
+                                                                                                            <img  width="75" height="106" src="@history.Chapter.Comic.CoverImage" />
+                                                                                                        </a>
+                                                                                                    </div>
+                                                                                                    <div class="item-infor">
+                                                                                                        <div class="settings-title">
+                                                                                                            <h3>
+                                                                                                                <a href="Detail/Index/@history.Chapter.Comic.Id">@history.Chapter.Comic.Title</a>
+                                                                                                            </h3>
+                                                                                                        </div>
+                                                                                                        <div style="line-height:1.1">
+                                                                                                            <span class="chap">
+                                                                                                                <a href="/ReadChapter/Index/@history.ChapterId" style="font-weight:bold">
+                                                                                                                    Chương @history.Chapter.ChapterNumber
+                                                                                                                </a>
+                                                                                                            </span>
+                                                                                                        </div>
+                                                                                                        <div class="post-on font-meta">
+                                                                                                            @TimeAgoHelper.TimeAgo(history.ReadDate)
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                    <div class="action">
+                                                                                                        <a href="/deleteHistory?id=@history.ReadHistoryId"><i class="icon ion-ios-close"></i></a>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        }
+                                                                                        
+
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                            </div>
+                                                                            <!-- Pagination -->
+                                                                            <!-- Pagination -->
+                                                                            <div class="d-flex justify-content-end mt-3">
+                                                                                <a asp-action="Index" asp-controller="ReadHistories" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == 1 ? "disabled" : "")">Trước</a>
+                                                                                <span class="badge bg-light text-dark border mx-3 px-3 py-2">Trang @Model.CurrentPage / @Model.TotalPages</span>
+                                                                                <a asp-action="Index" asp-controller="ReadHistories" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-outline-secondary btn-sm ms-2 @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Sau</a>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <!--
+                                            Quang cao
+                                            <div class="ad c-ads custom-code body-bottom-ads"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/Build-The-Best-Manga-Site.jpg" /></a></div>
+                                        -->
+
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div><!-- <div class="site-content"> -->
+                <!--
+                <div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-left"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/1.jpg" /></a></div><div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-right"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/2.jpg" /></a></div>
+                -->
+
+
+            </div> <!-- class="wrap" -->
+        </div> <!-- class="body-wrap" -->
+
+
+
+    </div>
+</body>

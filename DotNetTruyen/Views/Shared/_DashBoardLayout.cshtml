@@ -1,0 +1,357 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject DotNetTruyen.Services.INotificationService NotificationService
+@inject UserManager<User> UserManager
+@{
+    var user = await UserManager.GetUserAsync(User);
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="shortcut icon" href="~/images/svg/Logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="~/css/dashboard_style.css" asp-append-version="true">
+
+	<link href="~/lib/notyf/notyf.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layer"></div>
+    <!-- ! Body -->
+    <a class="skip-link sr-only" href="#skip-target">Skip to content</a>
+    <div class="page-flex">
+        <!-- ! Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-start">
+                <div class="sidebar-head">
+                    <a href="/Dashboard" class="logo-wrapper" title="Home">
+                        <span class="sr-only">Home</span>
+                        <span class="icon logo" aria-hidden="true"></span>
+                        <div class="logo-text">
+                            <span class="logo-title">DNTr</span>
+                            <span class="logo-subtitle">Dashboard</span>
+                        </div>
+
+                    </a>
+                    <button class="sidebar-toggle transparent-btn" title="Menu" type="button">
+                        <span class="sr-only">Toggle menu</span>
+                        <span class="icon menu-toggle" aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="sidebar-body">
+                    <ul class="sidebar-body-menu">
+                        <li>
+                            <a class="active" href="/Dashboard"><span class="icon home" aria-hidden="true"></span>Dashboard</a>
+                        </li>
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon document" aria-hidden="true"></span>Truyện Tranh
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                                <li>
+                                    <a href="/Comics">Tất cả truyện tranh</a>
+                                </li>
+                                <li>
+                                    <a href="/Comics/Create">Thêm truyện tranh mới</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon folder" aria-hidden="true"></span>Thể loại
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                                <li>
+                                    <a href="/Genres">Tất cả thể loại</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon image" aria-hidden="true"></span>Quảng Cáo
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                               
+                                <li>
+                                    <a href="/Advertisements">Quản lí quảng cáo</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon paper" aria-hidden="true"></span>Level người dùng
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                                <li>
+                                    <a href="/Levels">Quản lý Level</a>
+                                </li>
+                                
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/ManageNotifications">
+                                <span class="icon message" aria-hidden="true"></span>
+                                Thông báo
+                            </a>
+                            @{
+                                int unreadCount = await NotificationService.GetUnreadNotificationCountAsync(isAdmin:true);
+                            }
+                            <span class="msg-counter">@unreadCount</span>
+                        </li>
+                    </ul>
+                    <span class="system-menu__title">Hệ thống</span>
+                    <ul class="sidebar-body-menu">
+                        
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon user-3" aria-hidden="true"></span>Users
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                                <li>
+                                    <a href="/userManagement">Tất cả người dùng</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="show-cat-btn" href="##">
+                                <span class="icon category" aria-hidden="true"></span>Vai trò
+                                <span class="category__btn transparent-btn" title="Open list">
+                                    <span class="sr-only">Open list</span>
+                                    <span class="icon arrow-down" aria-hidden="true"></span>
+                                </span>
+                            </a>
+                            <ul class="cat-sub-menu">
+                                <li>
+                                    <a href="/roleManagement">Tất cả vai trò</a>
+                                </li>
+                                <li>
+                                    <a href="Roles/Create">Thêm vai trò</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </aside>
+        <div class="main-wrapper">
+            <!-- ! Main nav -->
+            <nav class="main-nav--bg">
+                <div class="container main-nav">
+                    <div class="main-nav-start">
+                        <div class="search-wrapper">
+                            <p>Welcome!</p>
+                        </div>
+                    </div>
+                    <div class="main-nav-end">
+                        
+                        @await Component.InvokeAsync("RecentNotifications")
+        
+                        
+                        <div class="nav-user-wrapper">
+                            <button href="##" class="nav-user-btn dropdown-btn" title="My profile" type="button">
+                                <span class="sr-only">My profile</span>
+                                <span class="nav-user-img">
+                                    @if (user.ImageUrl == null)
+                                    {
+                                        <img src="https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=100&d=mm&r=g">
+                                    }
+                                    else
+                                    {
+                                        <img src="@user.ImageUrl">
+                                    }
+                                </span>
+                            </button>
+                            <ul class="users-item-dropdown nav-user-dropdown dropdown">
+                                <li>
+                                    <a href="/">
+                                        <i data-feather="home" aria-hidden="true"></i>
+                                        <span>Trang chủ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/userProfile">
+                                        <i data-feather="settings" aria-hidden="true"></i>
+                                        <span>Cài đặt tài khoản</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="danger" href="/Logout">
+                                        <i data-feather="log-out" aria-hidden="true"></i>
+                                        <span>Đăng xuất</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- ! Main -->
+            <div class="p-5 mb-5">
+                @RenderBody()
+            </div>
+            <!-- ! Footer -->
+            <footer class="footer">
+                <div class="container footer--flex">
+                    <div class="footer-start">
+                        <p>
+                            2025 © DotNetTruyen Dashboard - <a href="##" target="_blank"
+                                                          rel="noopener noreferrer">elegant-dashboard.com</a>
+                        </p>
+                    </div>
+                    <ul class="footer-end">
+                        <li><a href="##">About</a></li>
+                        <li><a href="##">Support</a></li>
+                        <li><a href="##">Puchase</a></li>
+                    </ul>
+                </div>
+            </footer>
+        </div>
+    </div>
+    
+    <script src="~/plugins/chart.min.js"></script>
+    <script src="~/plugins/feather.min.js"></script>
+    
+    <script src ="~/microsoft/signalr/dist/browser/signalr.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/lib/notyf/notyf.min.js"></script>
+	<script src="~/lib/sweetalert2/sweetalert2@11.js"></script>
+    <script src="~/js/dashboard_script.js" asp-append-version="true"></script>
+    <script>
+        
+        const notyf = new Notyf({
+            duration: 4000,
+            position: { x: 'center', y: 'top' },
+            ripple: true
+        });
+        
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            @:notyf.success("@TempData["SuccessMessage"]");
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            @:notyf.error("@TempData["ErrorMessage"]");
+        }
+
+
+                const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .withAutomaticReconnect()
+            .build();
+
+        connection.on("ReceiveNotification", function (notification) {
+            // Tạo chuỗi HTML cho thông báo mới
+            const notificationHtml = `
+                <li id="notification-${notification.id}" class="unread">
+                    <a href="${notification.link}" class="notification-link" data-id="${notification.id}">
+                        <div class="notification-dropdown-icon ${notification.type}">
+                            <i class="fas fa-${notification.icon}" aria-hidden="true"></i>
+                        </div>
+                        <div class="notification-dropdown-text">
+                            <span class="notification-dropdown__title">${notification.title}</span>
+                            <span class="notification-dropdown__subtitle">${notification.message}</span>
+                        </div>
+                    </a>
+                </li>`;
+
+            
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(notificationHtml, 'text/html');
+            const li = doc.querySelector('li');
+
+            
+            const dropdown = document.querySelector('.notification-dropdown');
+            const goToPageLink = dropdown.querySelector('.link-to-page');
+            dropdown.insertBefore(li, dropdown.firstChild);
+
+            const msgCounter = document.querySelector('.msg-counter');
+            let currentCount = parseInt(msgCounter.textContent) || 0;
+            msgCounter.textContent = currentCount + 1;
+            msgCounter.style.display = (currentCount + 1 > 0) ? 'inline-block' : 'none';
+
+            // Cập nhật trạng thái active của icon notification
+            const notificationIcon = document.querySelector('.icon.notification');
+            if (currentCount + 1 > 0) {
+                notificationIcon.classList.add('active');
+            }
+
+            // Hiển thị thông báo Notyf
+            notyf.success(`${notification.title}: ${notification.message}`);
+
+            // Gắn sự kiện click cho notification-link mới
+            const newLink = li.querySelector('.notification-link');
+            newLink.addEventListener('click', function (e) {
+                e.preventDefault();
+                const notificationId = this.getAttribute('data-id');
+                const href = this.getAttribute('href');
+
+                fetch('/ManageNotifications/MarkAsRead', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ id: notificationId })
+                })
+                    
+                window.location.href = href;
+
+            });
+        });
+        connection.on("UpdateUnreadCount", function (unreadCount) {
+            
+            const msgCounter = document.querySelector('.msg-counter');
+            msgCounter.textContent = unreadCount;
+            // msgCounter.style.display = (unreadCount > 0) ? 'inline-block' : 'none';
+
+            // Cập nhật trạng thái active của icon notification
+            const notificationIcon = document.querySelector('.icon.notification');
+            if (unreadCount > 0) {
+                notificationIcon.classList.add('active');
+            } else {
+                notificationIcon.classList.remove('active');
+            }
+        });
+
+        connection.on("MarkNotificationAsRead", function (notificationId) {
+            // Tìm và xóa class unread của thông báo
+            const notificationElement = document.querySelector(`#notification-${notificationId}`);
+            if (notificationElement) {
+                notificationElement.classList.remove('unread');
+            }
+        });
+        connection.start()
+            .then(() => console.log("SignalR Connected"))
+            .catch(err => console.error("SignalR Connection Error: ", err));
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @await RenderSectionAsync("Styles", required: false)
+    
+</body>
+</html>

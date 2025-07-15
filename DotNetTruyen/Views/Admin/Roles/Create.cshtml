@@ -1,0 +1,111 @@
+﻿@model DotNetTruyen.ViewModels.Management.CreateRoleViewModel
+@{
+    ViewData["Title"] = "Thêm vai trò";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-light border-bottom py-3">
+            <h4 class="fw-bold mb-0 text-dark">Thêm vai trò</h4>
+        </div>
+        <div class="card-body p-4">
+            <form id="editForm" asp-action="Create" method="post">
+
+                <!-- Tên quyền -->
+
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark">Tên vai trò</label>
+                    <input asp-for="Name" class="form-control py-2 rounded-3 shadow-sm" placeholder="Nhập tên vai trò" required />
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.Name)</span>
+                </div>
+
+                <!-- Chọn quyền -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark">Chọn quyền</label>
+
+                    <div class="border rounded-3 p-3 bg-white shadow-sm" id="storyList" style="max-height: 300px; overflow-y: auto;">
+                        @foreach (var permission in Model.Permissions)
+                        {
+                            <div class="form-check d-flex align-items-center p-2 border-bottom hover-bg-light">
+                                <input type="checkbox" class="form-check-input me-3"
+                                       value="@permission" id="@permission" name="SelectedPermission"
+                                @(Model.SelectedPermission.Contains(permission) ? "checked" : "") />
+                                <label class="form-check-label flex-grow-1 text-dark">@permission</label>
+                                <input type="hidden" value="@permission" name="Permissions" />
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-3">Hủy</a>
+                    <button id="submitButton" type="submit" class="btn btn-primary px-4 py-2 rounded-3">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hover-bg-light:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-danger.btn-sm {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary:hover, .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
+    </style>
+}
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const submitButton = document.getElementById("submitButton");
+        const editForm = document.getElementById("editForm");
+        submitButton.addEventListener("click", async function (e) {
+            e.preventDefault();
+            const result = await Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn lưu thay đổi không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+                reverseButtons: true
+            });
+
+            if (result.isConfirmed) {
+                editForm.submit();
+            } else {
+                notyf.error("Đã hủy lưu thay đổi!");
+            }
+        });
+    });
+</script>

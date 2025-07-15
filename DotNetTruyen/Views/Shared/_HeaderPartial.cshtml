@@ -1,0 +1,222 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using DotNetTruyen.Services
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject RoleManager<IdentityRole<Guid>> RoleManager
+@inject INotificationService NotificationService
+@{
+    var user = await UserManager.GetUserAsync(User);
+    var canAccessDashboard = false;
+    var unreadCount = 0;
+
+    if (user != null)
+    {
+        var userRoles = await UserManager.GetRolesAsync(user);
+        foreach (var roleName in userRoles)
+        {
+            var role = await RoleManager.FindByNameAsync(roleName);
+            if (role != null)
+            {
+                var roleClaims = await RoleManager.GetClaimsAsync(role);
+                if (roleClaims.Any(c => c.Type == "Permission" && c.Value == "Vào bảng điều khiển"))
+                {
+                    canAccessDashboard = true;
+                }
+            }
+        }
+        // Lấy số lượng thông báo chưa đọc cho user
+        unreadCount = await NotificationService.GetUnreadNotificationCountAsync(user.Id.ToString(), false);
+    }
+    else
+    {
+        unreadCount = 0;
+    }
+
+    var currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+    var isSearchPage = currentController == "Search" && currentAction == "Index";
+}
+
+<header class="site-header">
+    <div class="c-header__top">
+        <ul class="search-main-menu">
+            <li>
+                <form id="blog-post-search" class="ajax" action="@Url.Action("Index", "Search")" method="get">
+                    <input type="text" placeholder="Search..." name="searchQuery" value="">
+                    <input type="submit" value="Search">
+                    <div class="loader-inner line-scale">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </form>
+            </li>
+        </ul>
+        <div class="main-navigation style-1 ">
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="main-navigation_wrap">
+                            <div class="menu-left">
+                                <a class="logo" href="/Home" title="Madara Child X Theme">
+                                    <img class="img-responsive" src="~/images/svg/bulk/images.jpg" />
+                                </a>
+                                <div class="main-menu">
+                                    <div class="section_adult off">
+                                        <a href="https://live.mangabooth.com/x/" target="_self" title="Family Safe">
+                                            <span class="dot"><!-- --></span><span>DotNetTruyen - Group 2</span>
+                                        </a>
+                                    </div>
+                                    <ul class="nav navbar-nav main-navbar">
+                                        <li id="menu-item-197" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-189 current_page_item menu-item-197"><a href="/" aria-current="page">Trang Chủ</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="menu-right">
+                                @if (!isSearchPage)
+                                {
+                                    <div id="search-sidebar">
+                                        <form class="manga-search-form search-form ajax" id="blog-post-search" action="/Search/Index" method="get">
+                                            <input class="manga-search-field" type="text" placeholder="Tìm Kiếm" name="searchQuery" value="">
+                                            <button type="submit" class="btn-search"><i class="fas fa-search-minus"></i></button>
+                                            <div class="loader-inner line-scale">
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                                <div></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                }
+                                <div class="c-sub-header-nav ">
+                                    @if (!SignInManager.IsSignedIn(User))
+                                    {
+                                        <div class="c-sub-nav_wrap">
+                                            <div class="c-modal_item">
+                                                <a href="/login" class="btn-active-modal">Đăng nhập</a>
+                                                <a href="/register" class="btn-active-modal">Đăng ký</a>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="c-sub-nav_wrap">
+                                            <div class="c-modal_item">
+                                                <div class="c-user_item">
+                                                    <h5>Xin chào, @user.NameToDisplay</h5>
+                                                    <div class="c-user_avatar">
+                                                        @if (string.IsNullOrEmpty(user.ImageUrl))
+                                                        {
+                                                            <div class="c-user_avatar-image"><img alt='' src='https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=50&d=mm&r=g' srcset='https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=100&d=mm&r=g 2x' class='avatar avatar-50 photo' height='50' width='50' decoding='async' /></div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="c-user_avatar-image"><img alt='' src='@user.ImageUrl' class='avatar avatar-50 photo' height='50' width='50' decoding='async' /></div>
+                                                        }
+                                                        <ul class="c-user_menu">
+                                                            @if (string.IsNullOrEmpty(user.ImageUrl))
+                                                            {
+                                                                <li class="user-info"><img alt='' src='https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=96&d=mm&r=g' srcset='https://secure.gravatar.com/avatar/3f009d72559f51e7e454b16e5d0687a1?s=192&d=mm&r=g 2x' class='avatar avatar-96 photo' height='96' width='96' decoding='async' /><span class="info"><span class="user-email">@user.NameToDisplay</span></span></li>
+                                                            }
+                                                            else
+                                                            {
+                                                                <li class="user-info"><img alt='' src='@user.ImageUrl' class='avatar avatar-96 photo' height='96' width='96' decoding='async' /><span class="info"><span class="user-email">@user.NameToDisplay</span></span></li>
+                                                            }
+                                                            <li id="menu-item-200" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-200"><a href="/follows">Truyện đã theo dõi</a></li>
+                                                            <li>
+                                                                <a href="/userProfile">Cài đặt thông tin người dùng</a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="/userProfile/Notifications">
+                                                                    Thông báo
+                                                                    @if (unreadCount > 0)
+                                                                    {
+                                                                        <span class="notification-dot"></span>
+                                                                    }
+                                                                </a>
+                                                            </li>
+                                                            @if (canAccessDashboard)
+                                                            {
+                                                                <li>
+                                                                    <a href="/DashBoard">Trang quản lí</a>
+                                                                </li>
+                                                            }
+                                                            <li>
+                                                                <a href="/logout">Đăng xuất</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                <div class="c-togle__menu">
+                                    <button type="button" class="menu_icon__open">
+                                        <span></span> <span></span> <span></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mobile-menu menu-collapse off-canvas">
+        <div class="close-nav">
+            <button class="menu_icon__close">
+                <span></span> <span></span>
+            </button>
+        </div>
+        @if (!isSearchPage)
+        {
+            <div id="search-sidebar">
+                <form class="manga-search-form search-form ajax" id="blog-post-search" action="https://live.mangabooth.com/x/" method="get">
+                    <input class="manga-search-field" type="text" placeholder="Search" name="searchQuery" value="">
+                    <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                    <div class="loader-inner line-scale">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </form>
+            </div>
+        }
+        <nav class="off-menu">
+            <ul id="menu-primary-menu-594" class="nav navbar-nav main-navbar">
+                <li id="nav-menu-item-197" class="main-menu-item menu-item-depth-0 menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-189 current_page_item"><a href="https://live.mangabooth.com/x/" class="menu-link  main-menu-link">Home </a></li>
+                <li id="nav-menu-item-198" class="main-menu-item menu-item-depth-0 menu-item menu-item-type-post_type menu-item-object-page"><a href="https://live.mangabooth.com/x/all-series/" class="menu-link  main-menu-link">All Series </a></li>
+                <li id="nav-menu-item-199" class="main-menu-item menu-item-depth-0 menu-item menu-item-type-post_type menu-item-object-page"><a href="https://live.mangabooth.com/x/calendar-2/" class="menu-link  main-menu-link">Calendar </a></li>
+            </ul>
+        </nav>
+
+        <div class="center">
+            <div class="section_adult off">
+                <a href="https://live.mangabooth.com/x/" target="_self" title="Family Safe">
+                    <span class="dot"><!-- --></span><span>Family Safe</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<style>
+    .notification-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: red;
+        border-radius: 50%;
+        margin-left: 5px;
+        vertical-align: middle;
+    }
+</style>

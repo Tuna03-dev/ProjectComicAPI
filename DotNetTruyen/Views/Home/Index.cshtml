@@ -1,0 +1,561 @@
+﻿@model List<DotNetTruyen.Models.Comic>
+@{
+    ViewData["Title"] = "DotNetTruyen";
+    var advertisements = ViewBag.Advertisements as List<DotNetTruyen.Models.Advertisement>;
+    var leftAd = advertisements?.FirstOrDefault(a => a.Title == "left");
+    var rightAd = advertisements?.FirstOrDefault(a => a.Title == "right");
+    var topAd = advertisements?.FirstOrDefault(a => a.Title == "top");
+    var botAd = advertisements?.FirstOrDefault(a => a.Title == "bot");
+
+}
+
+<body class="home page-template page-template-page-templates page-template-front-page page-template-page-templatesfront-page-php page page-id-189 wp-embed-responsive header-style-1 sticky-enabled sticky-style-1 text-ui-light minimal-reading-layout">
+<div id="pageloader" class="spinners">
+			<div class="spinner"><div class="c-pre-loading-logo"><a class="logo" href="" title="Madara Child X Theme"><img class="for-original" src="~/images/svg/bulk/images.jpg" alt="Madara Child X Theme"></a></div><div class="loader-inner ball-grid-pulse">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+            </div>
+        </div><div class="wrap">
+    <div class="body-wrap">
+            <partial name="_HeaderPartial" />
+
+<style>
+.slider__thumb_item {
+    height: 200px; 
+    overflow: hidden; 
+}
+
+
+}
+</style>
+<div class="c-sidebar c-top-sidebar" style="padding:15px 1px;">
+    <div class="container-fluid c-container-fluid">
+        <div class="row c-row">
+            <div id="manga-slider-2" class="widget col-12 col-md-12 default no-icon heading-style-1 manga-widget widget-manga-slider">
+                <div class="widget__inner manga-widget widget-manga-slider__inner c-widget-wrap">
+                    <div class="widget-content">
+                        <div class="manga-slider style-2" data-autoplay="0" data-style="style-2" data-count="4">
+                            <div class="slider__container" role="toolbar">
+                                @foreach (var comic in Model.Take(8).Where(c => c.Status)) // Chỉ lấy truyện có Status = true
+                                {
+                                    <div class="slider__item">
+                                        <div class="slider__thumb">
+                                            <div class="slider__thumb_item" >
+                                                <a href="@Url.Action("Index","Detail", new { id = comic.Id })" title="@comic.Title">
+                                                    <img src="@comic.CoverImage" alt="@comic.Title">
+                                                    <div class="slider-overlay"></div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="slider__content">
+                                            <div class="slider__content_item">
+                                                <div class="post-title font-title">
+                                                    <h4>
+                                                        @if (comic.Status) // Hiển thị "HOT" nếu Status = true
+                                                        {
+                                                            <span class="manga-title-badges hot">HOT</span>
+                                                        }
+                                                        <a href="@Url.Action("Index","Detail", new { id = comic.Id })">@comic.Title</a>
+                                                    </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+			
+	
+
+
+ <div class="site-content">
+        
+    <div class="c-page-content style-2">
+        <div class="content-area ">
+            <div class="container">
+
+                <div class="row ">
+
+                    <div class="col-md-12 col-sm-12">
+
+						<div class="ad c-ads custom-code body-top-ads" style="text-align: center;">
+                           <a href="@(topAd != null ? topAd.LinkTo : "https://mangabooth.com/product/wp-manga-theme-madara/")">
+                              <img src="@(topAd != null ? topAd.ImageUrl : "images/Build-The-Best-Manga-Site.jpg")" alt="Top Ad" style="display: inline-block;">
+                            </a>
+            </div>
+
+                        <div class="main-col-inner">
+
+							
+
+								
+
+<div id="post-189" class="c-blog-post post-189 page type-page status-publish hentry">
+	
+	
+	
+    <div class="entry-content">
+        <div class="entry-content_wrap">
+			
+
+@* 
+<div id="c-post-slider-598" class="manga-slider style-2" data-style="style-2" data-count="3">
+    <div class="slider__container" role="toolbar">
+        @foreach (var comic in Model.Take(5).Where(c => c.View > 1000)) 
+        {
+            <div class="slider__item">
+                <div class="slider__thumb">
+                    <div class="slider__thumb_item">
+                        <a href="@Url.Action("Detail", "Comic", new { id = comic.Id })">
+                            <img src="@comic.CoverImage" alt="@comic.Title" width="450" height="450">
+                            <div class="slider-overlay"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="slider__content">
+                    <div class="slider__content_item">
+                        <div class="post-title font-title">
+                            <h4>
+                                @if (comic.View > 1000) 
+                                {
+                                    <span class="manga-title-badges custom trending">trending</span>
+                                }
+                                <a href="@Url.Action("Detail", "Comic", new { id = comic.Id })">@comic.Title</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider__meta">
+                    <span class="manga-chapter-type">Comic</span>
+                </div>
+            </div>
+        }
+    </div>
+</div> *@
+			
+
+
+						
+
+<div class="x-heading"><h2 style="color:">Truyện hay</h2><div class="sub-links"></div></div>
+<div id="c-post-slider-598" class="manga-slider style-2" data-style="style-2" data-count="3">
+    <div class="slider__container" role="toolbar">
+        @foreach (var comic in Model.Take(5).Where(c => c.View > 100)) 
+        {
+            <div class="slider__item">
+                <div class="slider__thumb">
+                    <div class="slider__thumb_item">
+                        <a href="@Url.Action("Index","Detail", new { id = comic.Id })">
+                            <img src="@comic.CoverImage" alt="@comic.Title" width="450" height="450">
+                            <div class="slider-overlay"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="slider__content">
+                    <div class="slider__content_item">
+                        <div class="post-title font-title">
+                            <h4>
+                                @if (comic.View > 100) 
+                                {
+                                    <span class="manga-title-badges custom trending">trending</span>
+                                }
+                                <a href="@Url.Action("Index","Detail", new { id = comic.Id })">@comic.Title</a>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider__meta">
+                    <span class="manga-chapter-type">Comic</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+        
+
+						
+						
+						<div style="height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+						
+						
+						
+						<div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+						
+					
+
+<div class="x-heading"><h2 style="color:">Truyện mới nhất</h2><div class="sub-links"><a style="color:" href=""></a></div></div>
+<div style="height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+
+<div id="c-post-slider-714" class="manga-slider style-3" data-style="style-3" data-count="3">
+    <div class="slider__container" role="toolbar">
+        @foreach (var comic in Model.OrderByDescending(m => m.CreatedAt)) 
+        {
+            <div class="slider__item">
+                <div class="slider__thumb">
+                    <div class="slider__thumb_item">
+                        <a href="@Url.Action("Index","Detail", new { id = comic.Id })">
+                            <img src="@comic.CoverImage" alt="@comic.Title" width="550" height="315">
+                            <div class="slider-overlay"></div>
+                        </a>
+                    </div>
+                </div>
+                <div class="slider__content">
+                    <div class="slider__content_item">
+                        <div class="post-title font-title">
+                            <h4>
+                                @if (comic.View > 100) // Ví dụ: Hiển thị "trending" nếu lượt xem > 1000
+                                {
+                                    <span class="manga-title-badges custom trending">trending</span>
+                                }
+                                else if (comic.Status) // Ví dụ: Hiển thị "HOT" nếu Status = true
+                                {
+                                    <span class="manga-title-badges hot">HOT</span>
+                                }
+                                <a href="@Url.Action("Index","Detail", new { id = comic.Id })">@comic.Title</a>
+                                <!-- Nếu có thể loại trong tương lai, thêm span manga-genres ở đây -->
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="slider__meta">
+                    <span class="manga-chapter-type">Truyện</span>
+                </div> *@
+            </div>
+        }
+    </div>
+
+</div>
+
+        
+
+						
+						
+						<div style="height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+						
+						
+						
+						<div style="height:30px" aria-hidden="true" class="wp-block-spacer"></div>
+						
+
+						
+						<div class="x-heading"><h2 style="color:">Truyện mới cập nhật gần đây</h2><div class="sub-links"><a style="color:" href=""></a></div></div>
+
+						
+						
+						<div style="height:0px" aria-hidden="true" class="wp-block-spacer"></div>
+						
+						
+						                <div class="c-page">
+                    <div class="c-page__content">
+
+						
+                        <!-- Tab panes -->
+                        <div class="tab-content-wrap">
+                            <div role="tabpanel" class="c-tabs-item">
+                                <div>
+									<table class="manga-shortcodes manga-chapters-listing"><tbody>
+        @{
+    // Sắp xếp comicsList theo PublishedDate của chapter mới nhất và lọc bỏ các comic không có chapter được xuất bản
+   var currentDate = DateTime.Now; // Ngày hiện tại: 27/03/2025
+
+var comicsList = Model
+    .Where(c => c.Chapters != null && c.Chapters.Any(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)) 
+    .OrderByDescending(c => c.Chapters
+        .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+        .Max(ch => (DateTime?)ch.PublishedDate) ?? c.CreatedAt)
+    .ToList();
+
+var comicsListForJs = comicsList.Select(comic => new
+{
+    id = comic.Id,
+    title = comic.Title,
+    coverImage = comic.CoverImage,
+    author = comic.Author,
+    createdAt = comic.CreatedAt?.ToString("yyyy-MM-ddTHH:mm:ss"),
+    latestChapter = comic.Chapters?
+        .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+        .OrderByDescending(ch => ch.PublishedDate)
+        .FirstOrDefault() != null
+        ? new
+        {
+            id = comic.Chapters
+                .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+                .OrderByDescending(ch => ch.PublishedDate)
+                .First().Id,
+            chapterTitle = comic.Chapters
+                .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+                .OrderByDescending(ch => ch.PublishedDate)
+                .First().ChapterTitle,
+            chapterNumber = comic.Chapters
+                .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+                .OrderByDescending(ch => ch.PublishedDate)
+                .First().ChapterNumber,
+            publishedDate = comic.Chapters
+                .Where(ch => ch.IsPublished && ch.PublishedDate.HasValue && ch.PublishedDate.Value <= currentDate)
+                .OrderByDescending(ch => ch.PublishedDate)
+                .First().PublishedDate?.ToString("yyyy-MM-ddTHH:mm:ss")
+        }
+        : null
+}).ToList();
+}
+
+<div class="tab-content-wrap">
+    <div role="tabpanel" class="c-tabs-item">
+        <div>
+            <table class="manga-shortcodes manga-chapters-listing">
+                <tbody id="comic-list">
+                    @foreach (var comic in comicsList.Take(5))
+                    {
+                        var latestChapter = comic.Chapters?.Where(c => c.IsPublished).OrderByDescending(c => c.PublishedDate).FirstOrDefault();
+                        
+                        <tr>
+                            <td class="thumb">
+                                <a href="@Url.Action("Index", "Detail", new { id = comic.Id })" title="@comic.Title">
+                                    <img src="@comic.CoverImage" alt="@comic.Title" width="75" height="106">
+                                </a>
+                            </td>
+                            <td class="title">
+                                <a href="@Url.Action("Index", "Detail", new { id = comic.Id })" title="@comic.Title">@comic.Title</a>
+                            </td>
+                            <td class="release has-thumb free-chap">
+                                @if (latestChapter != null)
+                                {
+                                    <a href="@Url.Action("Index", "ReadChapter", new { id = latestChapter.Id })" 
+                                       title="@(latestChapter.ChapterTitle ?? "Chapter " + latestChapter.ChapterNumber)">
+                                        @(latestChapter.ChapterTitle ?? "Chapter " + latestChapter.ChapterNumber)
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span>No chapters available</span>
+                                }
+                            </td>
+                            <td class="author">
+                                <a href="#">@comic.Author</a>
+                            </td>
+                            <td class="time">
+                                <span class="post-on font-meta">@(latestChapter != null ? latestChapter.PublishedDate?.ToString("d MMMM, yyyy", new System.Globalization.CultureInfo("vi-VN")) : "N/A")</span>
+                                <span style="font-weight: 900;"> • </span>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Phân trang -->
+            <div class="pagination" style="display: flex; justify-content: center;">
+                <button id="prev-page" class="btn btn-secondary" style="display: none;">«</button>
+                <span id="pagination-numbers" style="margin: 0 10px;"></span>
+                <button id="next-page" class="btn btn-primary">»</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Truyền danh sách truyện sang JavaScript -->
+<script>
+    var comics = @Html.Raw(Json.Serialize(comicsListForJs));
+    var currentDate = new Date();
+
+    // Lọc các comic có latestChapter.publishedDate <= ngày hiện tại
+    comics = comics.filter(comic => 
+        comic.latestChapter != null && 
+        new Date(comic.latestChapter.publishedDate) <= currentDate
+    );
+    
+    var pageSize = 5; // Số truyện trên mỗi trang
+    var currentPage = 1; // Trang hiện tại
+    var totalPages = Math.ceil(comics.length / pageSize); // Tổng số trang
+
+    function renderPage() {
+        var comicList = document.getElementById("comic-list");
+        comicList.innerHTML = ""; // Xóa dữ liệu cũ
+
+        var start = (currentPage - 1) * pageSize;
+        var end = start + pageSize;
+        var pageComics = comics.slice(start, end); // Lấy truyện của trang hiện tại
+
+        pageComics.forEach(comic => {
+            var tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="thumb">
+                    <a href="/Comic/Detail/${comic.id}" title="${comic.title}">
+                        <img src="${comic.coverImage}" alt="${comic.title}" width="75" height="106">
+                    </a>
+                </td>
+                <td class="title">
+                    <a href="/Comic/Detail/${comic.id}" title="${comic.title}">${comic.title}</a>
+                </td>
+                <td class="release has-thumb free-chap">
+                    <a href="/ReadChapter/Index/${comic.latestChapter.id}" 
+                        title="${comic.latestChapter.chapterTitle || "Chapter " + comic.latestChapter.chapterNumber}">
+                        ${comic.latestChapter.chapterTitle || "Chapter " + comic.latestChapter.chapterNumber}
+                    </a>
+                </td>
+                <td class="author">
+                    <a href="#">${comic.author}</a>
+                </td>
+                <td class="time">
+                    <span class="post-on font-meta">${comic.latestChapter && comic.latestChapter.publishedDate ? new Date(comic.latestChapter.publishedDate).toLocaleDateString('vi-VN', { day: 'numeric', month: 'long', year: 'numeric' }) : "N/A"}</span>
+                    <span style="font-weight: 900;"> • </span>
+                </td>
+            `;
+            comicList.appendChild(tr);
+        });
+
+        renderPagination();
+    }
+
+    function renderPagination() {
+        var paginationNumbers = document.getElementById("pagination-numbers");
+        paginationNumbers.innerHTML = ""; // Xóa số trang cũ
+
+        var startPage = Math.max(1, currentPage - 2); // Hiển thị 2 trang trước
+        var endPage = Math.min(totalPages, currentPage + 2); // Hiển thị 2 trang sau
+
+        for (var i = startPage; i <= endPage; i++) {
+            var pageButton = document.createElement("button");
+            pageButton.innerText = i;
+            pageButton.style.margin = "0 10px";
+            pageButton.style.color = "black";
+            pageButton.className = "btn btn-sm " + (i === currentPage ? "btn-primary" : "btn-light");
+            pageButton.addEventListener("click", function () {
+                currentPage = parseInt(this.innerText);
+                renderPage();
+            });
+            paginationNumbers.appendChild(pageButton);
+        }
+
+        // Ẩn / Hiện nút "Trang trước" và "Trang sau"
+        document.getElementById("prev-page").style.display = (currentPage > 1) ? "inline-block" : "none";
+        document.getElementById("next-page").style.display = (currentPage < totalPages) ? "inline-block" : "none";
+    }
+
+    document.getElementById("prev-page").addEventListener("click", function () {
+        if (currentPage > 1) {
+            currentPage--;
+            renderPage();
+        }
+    });
+
+    document.getElementById("next-page").addEventListener("click", function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            renderPage();
+        }
+    });
+
+    renderPage(); // Gọi lần đầu để hiển thị dữ liệu
+</script>
+
+
+</tbody>
+</table>
+
+
+
+<table class="manga-shortcodes manga-chapters-listing"><tbody></tbody></table>                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+				
+        </div>
+    </div>
+
+	
+	
+	
+
+</div>
+								
+                        </div>
+
+							<div class="ad c-ads custom-code body-bottom-ads" style="margin-bottom: 0px;" style="text-align: center;">
+                           <a href="@(botAd != null ? botAd.LinkTo : "https://mangabooth.com/product/wp-manga-theme-madara/")">
+                              <img src="@(botAd != null ? botAd.ImageUrl : "images/Build-The-Best-Manga-Site.jpg")" alt="Top Ad" style="display: inline-block;">
+                            </a>
+            </div>
+                    </div>
+
+					
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        </div><!-- <div class="site-content"> -->
+  
+		<div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-left">
+                <a href="@(leftAd != null ? leftAd.LinkTo : "https://mangabooth.com/product/wp-manga-theme-madara/")">
+                    <img src="@(leftAd != null ? leftAd.ImageUrl : "")" alt="Left Ad">
+                </a>
+            </div>
+            <div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-right">
+                <a href="@(rightAd != null ? rightAd.LinkTo : "https://mangabooth.com/product/wp-manga-theme-madara/")">
+                    <img src="@(rightAd != null ? rightAd.ImageUrl : "")" alt="Right Ad">
+                </a>
+            </div>
+        </div> <!-- class="wrap" --></div> <!-- class="body-wrap" -->
+
+	
+
+<!-- Modal -->
+
+<div class="modal fade" id="frm-wp-manga-buy-coin" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span></button>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" name="wp-manga-coin-nonce" value="d23471310e">
+				<input type="hidden" name="wp-manga-chapter" value="">
+				<h3>
+					Premium Chapter				</h3>
+								<p class="message-login">You are required to login first</p>
+							</div>
+			<div class="modal-footer">
+								<button class="button button-secondary button-large btn-cancel">Cancel</button>
+			</div>
+		</div>
+	</div>
+</div>            
+<div class="go-to-top active">
+                <i class="icon ion-md-arrow-up"></i>
+            </div>
+			<script type="text/javascript" src="js/widgetopts.resize.js" id="widgetopts-resize-script-js"></script>
+<script type="text/javascript" src="js/frontend_1.js" id="wp-manga-chapter-thumbnail-frontend-js"></script>
+<script type="text/javascript" src="js/lightbox.min.js" id="lightbox-js"></script>
+<script type="text/javascript" src="js/core.js" id="madara-core-js"></script>
+<script type="text/javascript" src="js/smoothscroll.js" id="smoothscroll-js"></script>
+<script type="text/javascript" src="js/lazysizes.min.js" id="lazysizes-js"></script>
+<script type="text/javascript" src="js/imagesloaded.min.js" id="imagesloaded-js"></script>
+<script type="text/javascript" src="js/aos.js" id="aos-js"></script>
+<script type="text/javascript" src="js/ajax.js" id="madara-ajax-js"></script>
+<script type="text/javascript" src="js/slick.min_1.js" id="wp-manga-slick-js-js"></script>
+<script type="text/javascript" src="js/slick.min.js" id="slick-js"></script>
+<script type="text/javascript" src="js/ct-shortcodes.js" id="ct-shortcode-js-js"></script>
+
+
+
+
+
+</body><!-- Dynamic page generated in 0.383 seconds. --><!-- Cached page generated by WP-Super-Cache on 2025-02-11 03:50:26 --><!-- super cache -->

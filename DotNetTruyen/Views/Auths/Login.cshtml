@@ -1,0 +1,72 @@
+﻿@using DotNetTruyen.ViewModels
+@model LoginViewModel
+
+@{
+    ViewData["Title"] = "Đăng nhập";
+    Layout = "_AuthsLayout.cshtml";
+}
+
+    <div  class="modal" id="form-login" tabindex="-1" style="display: block; padding-right: 17px;position: unset;
+    font-family: 'Poppins', sans-serif;" aria-modal="true" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="window.location='/'" >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div id="login" class="login">
+                        <h3>
+                            <a href="/Home" title="Madara Child X Theme" tabindex="-1">Đăng nhập</a>
+                        </h3>
+                        <p class="text-success">@ViewBag.SuccessMessage</p>
+                        <p class="message login">@ViewBag.ErrorMessage</p>
+                        <meta name="robots" content="max-image-preview:large">
+                        <form name="loginform" id="loginform" asp-controller="Auths" asp-action="Login" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post">
+                            <p>
+                                <label>
+                                    Địa chỉ email hoặc tên tài khoản *
+                                <input asp-for="UserNameOrEmail" class="input user_login"  size="20">
+                                </label>
+                                <span asp-validation-for="UserNameOrEmail" class="text-danger"></span>
+                            </p>
+                            <p>
+                            <label class="password-container">
+                                    Mật khẩu *
+                                <input asp-for="Password" class="input user_pass" id="password" size="20">
+                                <i class="fa-solid fa-eye eye-icon" id="togglePassword" onclick="togglePassword()"></i>
+                                </label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </p>
+                            <p>
+
+                            </p>
+                            <p class="forgetmenot">
+                                <label>
+                                    <input asp-for="RememberMe" id="rememberme">Nhớ thông tin đăng nhập?
+                                </label>
+                            </p>
+                            <p class="submit">
+                                <input type="submit" name="wp-submit" class="button button-primary button-large wp-submit" value="Đăng nhập">                    
+
+                            </p>
+                        </form>
+                        <p class="nav">
+                            <a href="/forgotPassword" >Quên mật khẩu?</a>
+                        </p>
+                        <br />
+                        <div>
+                            <form asp-controller="Auths" asp-action="LoginWithGoogle" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
+                                <button type="submit" class="login-with-google-btn">
+                                    Đăng nhập bằng tài khoản Google
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+</div>
+<script src="~/js/toggleInputPassword.js"></script>

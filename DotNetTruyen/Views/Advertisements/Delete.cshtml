@@ -1,0 +1,85 @@
+﻿@model DotNetTruyen.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Xóa quảng cáo";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+   
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h2 class="mb-0">Xóa quảng cáo</h2>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    @TempData["ErrorMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Bạn có chắc chắn muốn xóa quảng cáo này không? Hành động này không thể hoàn tác.
+            </div>
+
+            <h4 class="mb-3">Chi tiết quảng cáo</h4>
+            
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4 fw-bold">Vị trí: </dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.Title)</dd>
+
+                                <dt class="col-sm-4 fw-bold">Liên Kết: </dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.LinkTo)</dd>
+
+                                <dt class="col-sm-4 fw-bold">Ảnh: </dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.ImageUrl)</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4 fw-bold">Ngày Tạo: </dt>
+                                <dd class="col-sm-8">@Html.DisplayFor(model => model.CreatedAt)</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <form asp-action="Delete" method="post" class="mt-4">
+                <input type="hidden" asp-for="Id" />
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Hủy bỏ
+                    </a>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt"></i> Xóa quảng cáo
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Optional: Add confirmation dialog
+        document.querySelector('form').addEventListener('submit', function(e) {
+            if (!confirm('Bạn có chắc chắn muốn xóa quảng cáo này?')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+}

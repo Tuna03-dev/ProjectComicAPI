@@ -1,0 +1,56 @@
+﻿@model List<DotNetTruyen.Models.Notification>
+
+<div class="notification-wrapper">
+    <button class="gray-circle-btn dropdown-btn" title="To messages" type="button">
+        <span class="sr-only">To messages</span>
+        <span class="icon notification @(ViewBag.HasUnreadNotifications == true ? "active" : "")" aria-hidden="true"></span>
+    </button>
+    <ul class="users-item-dropdown notification-dropdown dropdown">
+        @foreach (var notification in Model)
+        {
+            <li id="notification-@notification.Id" class="@(notification.IsRead ? "" : "unread")">
+                <a href="@notification.Link" class="notification-link" data-id="@notification.Id">
+                    <div class="notification-dropdown-icon @(notification.Type)">
+                        <i class="fas fa-@(notification.Icon)" aria-hidden="true"></i>
+                    </div>
+                    <div class="notification-dropdown-text">
+                        <span class="notification-dropdown__title">@notification.Title</span>
+                        <span class="notification-dropdown__subtitle">@notification.Message</span>
+                    </div>
+                </a>
+            </li>
+        }
+        <li>
+            <a class="link-to-page" href="/ManageNotifications">Tới trang thông báo</a>
+        </li>
+    </ul>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        
+        const notificationLinks = document.querySelectorAll('.notification-link');
+
+        
+        notificationLinks.forEach(link => {
+            link.addEventListener('click', function (e) {
+                e.preventDefault(); 
+
+                const notificationId = this.getAttribute('data-id');
+                const href = this.getAttribute('href');
+
+                
+                fetch('/ManageNotifications/MarkAsRead', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        
+                    },
+                    body: JSON.stringify({ id: notificationId })
+                });
+                window.location.href = href;
+            });
+        });
+    });
+</script>

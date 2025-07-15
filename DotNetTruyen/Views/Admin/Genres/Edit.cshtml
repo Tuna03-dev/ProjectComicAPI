@@ -1,0 +1,290 @@
+﻿@model DotNetTruyen.ViewModels.Management.GenreDetailViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa thể loại";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-light border-bottom py-3">
+            <h4 class="fw-bold mb-0 text-dark">Chỉnh sửa thể loại</h4>
+        </div>
+        <div class="card-body p-4">
+            <form id="editForm" asp-action="Edit" method="post">
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" id="selectedStoryIdsInput" name="SelectedStoryIds" value="@Html.Raw(Json.Serialize(Model.SelectedStoryIds))" />
+
+                <!-- Tên thể loại -->
+                
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark">Tên thể loại</label>
+                    <input asp-for="GenreName" class="form-control py-2 rounded-3 shadow-sm" placeholder="Nhập tên thể loại" />
+                    <span class="text-danger">@Html.ValidationMessageFor(model => model.GenreName)</span>
+                </div>
+
+                <!-- Chọn truyện -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark">Chọn truyện <span class="badge bg-primary rounded-pill" id="selectedCount">@Model.SelectedStoryIds.Count đã chọn</span></label>
+                    
+
+                    <div class="search-wrapper  mb-3 " >
+                        <i data-feather="search" aria-hidden="true"></i>
+                        <input type="text" id="searchQuery" class="" placeholder="Nhập tên thể loại" required>
+                        <button type="button" id="searchButton" class="btn btn-info px-2 py-2 rounded-end-3">Tìm kiếm</button>
+                    </div>
+                    <div class="border rounded-3 p-3 bg-white shadow-sm" id="storyList" style="max-height: 300px; overflow-y: auto;">
+                        @foreach (var story in Model.Comics)
+                        {
+                            <div class="form-check d-flex align-items-center p-2 border-bottom hover-bg-light">
+                                <input type="checkbox" class="form-check-input me-3"
+                                       value="@story.Id" id="story-@story.Id"
+                                @(Model.SelectedStoryIds.Contains(story.Id) ? "checked" : "") />
+                                <img src="@(string.IsNullOrEmpty(story.CoverImage) ? "##" : story.CoverImage)" alt="@story.Title" class="rounded me-3" width="40" height="40" />
+                                <label class="form-check-label flex-grow-1 text-dark" for="story-@story.Id">@story.Title</label>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Truyện đã chọn -->
+                <div class="mb-4">
+                    <label class="form-label fw-medium text-dark">Truyện đã chọn</label>
+                    <div class="d-flex flex-wrap gap-3" id="selectedStoriesContainer">
+                        @foreach (var id in Model.SelectedStoryIds)
+                        {
+                            var story = Model.Comics.FirstOrDefault(s => s.Id == id);
+                            if (story != null)
+                            {
+                                <div class="border p-2 rounded-3 d-flex align-items-center bg-light shadow-sm selected-story" data-id="@story.Id">
+                                    <img src="@(string.IsNullOrEmpty(story.CoverImage) ? "##" : story.CoverImage)" class="rounded me-2" width="40" height="40" />
+                                    <span class="me-3 text-dark">@story.Title</span>
+                                    <button type="button" class="btn btn-danger btn-sm rounded-circle remove-story" data-id="@story.Id">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <!-- Nút hành động -->
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2 rounded-3">Hủy</a>
+                    <button id="submitButton" type="submit" class="btn btn-primary px-4 py-2 rounded-3">Lưu thay đổi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .hover-bg-light:hover {
+            background-color: #f8f9fa;
+            transition: background-color 0.2s ease;
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-danger.btn-sm {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary:hover, .btn-outline-secondary:hover {
+            transform: translateY(-2px);
+            transition: transform 0.2s ease;
+        }
+
+        .form-check-label {
+            cursor: pointer;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const storyList = document.getElementById("storyList");
+            const selectedStoriesContainer = document.getElementById("selectedStoriesContainer");
+            const searchQuery = document.getElementById("searchQuery");
+            const searchButton = document.getElementById("searchButton");
+            const selectedCountBadge = document.getElementById("selectedCount");
+            const selectedStoryIdsInput = document.getElementById("selectedStoryIdsInput");
+            const submitButton = document.getElementById("submitButton");
+            const editForm = document.getElementById("editForm");
+            // Danh sách truyện ban đầu được chọn
+            let selectedStoryIds = @Html.Raw(Json.Serialize(Model.SelectedStoryIds));
+            submitButton.addEventListener("click", async function (e) {
+                e.preventDefault();
+                const result = await Swal.fire({
+                    title: 'Xác nhận',
+                    text: 'Bạn có chắc chắn muốn lưu thay đổi không?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
+                    cancelButtonText: 'Không',
+                    reverseButtons: true
+                });
+
+                if (result.isConfirmed) {
+                    editForm.submit();
+                } else {
+                    notyf.error("Đã hủy lưu thay đổi!");
+                }
+            });
+            // Cập nhật input ẩn
+            function updateHiddenInput() {
+                selectedStoryIdsInput.value = JSON.stringify(selectedStoryIds);
+            }
+
+            // Xử lý nút tìm kiếm
+            searchButton.addEventListener("click", function () {
+                const query = searchQuery.value.trim();
+                searchStories(query);
+            });
+
+            // Gửi yêu cầu tìm kiếm đến server
+            function searchStories(query) {
+                fetch(`/Genres/SearchStories?query=${encodeURIComponent(query)}`, {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                })
+                    .then(response => response.ok ? response.json() : Promise.reject("Không thể tải dữ liệu"))
+                    .then(data => updateStoryList(data))
+                    .catch(error => {
+                        console.error("Lỗi khi tìm kiếm:", error);
+                        storyList.innerHTML = `<div class="text-danger text-center p-2">Có lỗi xảy ra khi tìm kiếm.</div>`;
+                    });
+            }
+
+            // Cập nhật danh sách truyện
+            function updateStoryList(stories) {
+                storyList.innerHTML = "";
+                if (stories.length === 0) {
+                    storyList.innerHTML = `<div class="text-muted text-center p-2">Không tìm thấy truyện phù hợp.</div>`;
+                    return;
+                }
+
+                stories.forEach(story => {
+                    const isChecked = selectedStoryIds.includes(story.id);
+                    const storyItem = document.createElement("div");
+                    storyItem.className = "form-check d-flex align-items-center p-2 border-bottom hover-bg-light";
+                    storyItem.innerHTML = `
+                                <input type="checkbox" class="form-check-input me-3"
+                                       value="${story.id}" id="story-${story.id}" ${isChecked ? "checked" : ""} />
+                                <img src="${story.coverImage || '##'}" alt="${story.title}" class="rounded me-3" width="40" height="40" />
+                                <label class="form-check-label flex-grow-1 text-dark" for="story-${story.id}">${story.title}</label>
+                            `;
+                    storyList.appendChild(storyItem);
+
+                    const checkbox = storyItem.querySelector("input");
+                    checkbox.addEventListener("change", function () {
+                        handleCheckboxChange(this);
+                    });
+
+                    const label = storyItem.querySelector("label");
+                    label.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        checkbox.checked = !checkbox.checked;
+                        handleCheckboxChange(checkbox);
+                    });
+                });
+            }
+
+            // Xử lý thay đổi checkbox
+            function handleCheckboxChange(checkbox) {
+                const storyId = checkbox.value; // Giữ nguyên dưới dạng chuỗi, sẽ được xử lý trong backend
+                const storyTitle = checkbox.closest(".form-check").querySelector("label").innerText;
+                const storyImage = checkbox.closest(".form-check").querySelector("img").src;
+
+                if (checkbox.checked) {
+                    if (!selectedStoryIds.includes(storyId)) {
+                        selectedStoryIds.push(storyId);
+                        addSelectedStory(storyId, storyTitle, storyImage);
+                    }
+                } else {
+                    selectedStoryIds = selectedStoryIds.filter(id => id !== storyId);
+                    removeSelectedStory(storyId);
+                }
+                updateBadgeCount();
+                updateHiddenInput();
+            }
+
+            // Xử lý nút xóa từ "Truyện đã chọn"
+            selectedStoriesContainer.addEventListener("click", function (e) {
+                const removeBtn = e.target.closest(".remove-story");
+                if (removeBtn) {
+                    const storyId = removeBtn.getAttribute("data-id");
+                    const checkbox = storyList.querySelector(`input[value='${storyId}']`);
+                    if (checkbox) checkbox.checked = false;
+                    selectedStoryIds = selectedStoryIds.filter(id => id !== storyId);
+                    removeSelectedStory(storyId);
+                    updateBadgeCount();
+                    updateHiddenInput();
+                }
+            });
+
+            // Hàm thêm truyện vào danh sách đã chọn
+            function addSelectedStory(storyId, storyTitle, storyImage) {
+                if (selectedStoriesContainer.querySelector(`.selected-story[data-id='${storyId}']`)) return;
+
+                const storyItem = document.createElement("div");
+                storyItem.className = "border p-2 rounded-3 d-flex align-items-center bg-light shadow-sm selected-story";
+                storyItem.setAttribute("data-id", storyId);
+                storyItem.innerHTML = `
+                            <img src="${storyImage}" class="rounded me-2" width="40" height="40" />
+                            <span class="me-3 text-dark">${storyTitle}</span>
+                            <button type="button" class="btn btn-danger btn-sm rounded-circle remove-story" data-id="${storyId}">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        `;
+                selectedStoriesContainer.appendChild(storyItem);
+            }
+
+            // Hàm xóa truyện khỏi danh sách đã chọn
+            function removeSelectedStory(storyId) {
+                const storyItem = selectedStoriesContainer.querySelector(`.selected-story[data-id='${storyId}']`);
+                if (storyItem) storyItem.remove();
+            }
+
+            // Cập nhật số lượng truyện đã chọn
+            function updateBadgeCount() {
+                selectedCountBadge.textContent = `${selectedStoryIds.length} đã chọn`;
+            }
+
+            // Khởi tạo sự kiện cho các checkbox ban đầu
+            storyList.querySelectorAll(".form-check").forEach(item => {
+                const checkbox = item.querySelector("input");
+                const label = item.querySelector(".form-check-label");
+
+                checkbox.addEventListener("change", function () {
+                    handleCheckboxChange(this);
+                });
+
+                label.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    checkbox.checked = !checkbox.checked;
+                    handleCheckboxChange(checkbox);
+                });
+            });
+
+            // Cập nhật badge và input ẩn ban đầu
+            updateBadgeCount();
+            updateHiddenInput();
+        });
+    </script>
+}

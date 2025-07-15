@@ -1,0 +1,229 @@
+﻿@model DotNetTruyen.ViewModels.Management.ComicIndexViewModel
+
+@{
+    ViewData["Title"] = "Danh sách truyện";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<h1>Danh sách truyện</h1>
+
+<!-- Stats Cards -->
+@* <div class="row stat-cards">
+    <div class="col-md-6 col-xl-3">
+        <article class="stat-cards-item">
+            <div class="stat-cards-icon primary">
+                <i data-feather="book" aria-hidden="true"></i>
+            </div>
+            <div class="stat-cards-info">
+                <p class="stat-cards-info__num">@Model.TotalComics.ToString("N0")</p>
+                <p class="stat-cards-info__title">Tổng số truyện</p>
+                <p class="stat-cards-info__progress">
+                    <span class="stat-cards-info__profit success">
+                        <i data-feather="trending-up" aria-hidden="true"></i>4.07%
+                    </span>
+                    Tháng trước
+                </p>
+            </div>
+        </article>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <article class="stat-cards-item">
+            <div class="stat-cards-icon warning">
+                <i data-feather="eye" aria-hidden="true"></i>
+            </div>
+            <div class="stat-cards-info">
+                <p class="stat-cards-info__num">@Model.TotalViews.ToString("N0")</p>
+                <p class="stat-cards-info__title">Tổng lượt xem</p>
+                <p class="stat-cards-info__progress">
+                    <span class="stat-cards-info__profit danger">
+                        <i data-feather="trending-down" aria-hidden="true"></i>1.64%
+                    </span>
+                    Tháng trước
+                </p>
+            </div>
+        </article>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <article class="stat-cards-item">
+            <div class="stat-cards-icon purple">
+                <i data-feather="users" aria-hidden="true"></i>
+            </div>
+            <div class="stat-cards-info">
+                <p class="stat-cards-info__num">@Model.TotalFollows.ToString("N0")</p>
+                <p class="stat-cards-info__title">Tổng lượt theo dõi</p>
+                <p class="stat-cards-info__progress">
+                    <span class="stat-cards-info__profit success">
+                        <i data-feather="trending-up" aria-hidden="true"></i>0.24%
+                    </span>
+                    Tháng trước
+                </p>
+            </div>
+        </article>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <article class="stat-cards-item">
+            <div class="stat-cards-icon success">
+                <i data-feather="heart" aria-hidden="true"></i>
+            </div>
+            <div class="stat-cards-info">
+                <p class="stat-cards-info__num">@Model.TotalLikes.ToString("N0")</p>
+                <p class="stat-cards-info__title">Tổng lượt thích</p>
+                <p class="stat-cards-info__progress">
+                    <span class="stat-cards-info__profit warning">
+                        <i data-feather="trending-up" aria-hidden="true"></i>0.00%
+                    </span>
+                    Tháng trước
+                </p>
+            </div>
+        </article>
+    </div>
+</div> *@
+
+<!-- Search & Add -->
+<div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+    <form method="get" asp-action="Index" class="d-flex align-items-center">
+        <div class="search-wrapper">
+            <i data-feather="search" aria-hidden="true"></i>
+            <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Nhập từ khóa ...">
+            <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+        </div>
+    </form>
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Thêm truyện mới
+    </a>
+</div>
+
+<!-- Comics Table -->
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        @if (Model.Comics == null || !Model.Comics.Any())
+        {
+            <div class="text-center mt-4">
+                <span class="badge bg-warning text-dark p-3">Không có truyện nào được tìm thấy</span>
+            </div>
+        }
+        else
+        {
+            <div class="users-table table-wrapper">
+                <table class="posts-table">
+                    <thead>
+                        <tr class="users-table-info">
+                            <th>
+                                <label class="users-table__checkbox ms-20">
+                                    Ảnh bìa
+                                </label>
+                            </th>
+                            <th>Tên truyện</th>
+                            <th>Tác giả</th>
+                            <th>Lượt thích</th>
+                            <th>Lượt theo dõi</th>
+                            <th>Lượt xem</th>
+                            <th>Trạng thái</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var comic in Model.Comics)
+                        {
+                            <tr id="comic-@comic.Id">
+                                <td>
+                                    <label class="users-table__checkbox">
+                                        <div class="categories-table-img">
+                                            @if (!string.IsNullOrEmpty(comic.CoverImage))
+                                            {
+                                                <img src="@comic.CoverImage" alt="@comic.Title" width="80" height="100">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/img/default-cover.jpg" alt="No Cover" width="80" height="100">
+                                            }
+                                        </div>
+                                    </label>
+                                </td>
+                                <td>@comic.Title</td>
+                                <td>@comic.Author</td>
+                                <td>@comic.Likes.Count()</td>
+                                <td>@comic.Follows.Count()</td>
+                                <td>@comic.View</td>
+                                <td>
+                                    @if (comic.Status)
+                                    {
+                                        <span class="badge-active">Hoàn thành</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-pending">Đang cập nhật</span>
+                                    }
+                                </td>
+                                <td>
+                                    <span class="p-relative">
+                                        <button class="dropdown-btn transparent-btn" type="button" title="Thêm tùy chọn">
+                                            <div class="sr-only">Thêm tùy chọn</div>
+                                            <i data-feather="more-horizontal" aria-hidden="true"></i>
+                                        </button>
+                                        <ul class="users-item-dropdown dropdown">
+                                            <li><a asp-action="Details" asp-route-id="@comic.Id">Xem chi tiết</a></li>
+                                            <li><a asp-action="Edit" asp-route-id="@comic.Id">Chỉnh sửa</a></li>
+                                            <li>
+                                                <form asp-action="Delete" asp-route-id="@comic.Id" method="post" class="delete-form">
+                                                    <button type="button" class="btn-link delete-btn" data-id="@comic.Id">Xóa</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-end mt-3">
+                <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == 1 ? "disabled" : "")">Trước</a>
+                <span class="badge bg-light text-dark border mx-3 px-3 py-2">Trang @Model.CurrentPage / @Model.TotalPages</span>
+                <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-outline-secondary btn-sm ms-2 @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Sau</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const form = this.closest(".delete-form");
+
+                    console.log(form); 
+
+                    if (!form) {
+                        console.error("❌ Không tìm thấy form để submit!");
+                        return;
+                    }
+
+                    Swal.fire({
+                        title: "Bạn có chắc chắn?",
+                        text: "Truyện này sẽ bị xóa!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Hủy",
+                        confirmButtonText: "Xóa"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            console.log("✅ Form đang được submit...");
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+
+    </script>
+}

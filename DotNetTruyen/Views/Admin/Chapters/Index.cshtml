@@ -1,0 +1,144 @@
+﻿@model DotNetTruyen.ViewModels.Management.ChapterIndexViewModel
+
+@{
+    ViewData["Title"] = "Quản lý Chương";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<h1>Danh sách Chương</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+    <form method="get" asp-action="Index" class="d-flex align-items-center">
+        <input type="hidden" name="comicId" value="@Model.ComicId">
+        <div class="search-wrapper">
+            <i data-feather="search" aria-hidden="true"></i>
+            <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Nhập từ khóa ...">
+            <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <a asp-action="Create" asp-route-ComicId="@Model.ComicId" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Thêm chương mới
+    </a>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        @if (Model.ChapterViewModels == null || !Model.ChapterViewModels.Any())
+        {
+            <div class="text-center mt-4">
+                <span class="badge bg-warning text-dark p-3">Không có chương nào được tìm thấy</span>
+            </div>
+        }
+        else
+        {
+            <div class="users-table table-wrapper">
+                <table class="posts-table">
+                    <thead>
+                        <tr class="users-table-info">
+                            <th class="w-25">
+                                <label class="users-table__checkbox ms-20">
+                                    Thứ tự chương
+                                </label>
+                            </th>
+                            <th>Tên chương</th>
+                            <th>Trạng thái</th>
+                            <th>Ngày đăng</th>
+                            <th>Lượt xem</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var chapter in Model.ChapterViewModels)
+                        {
+                            <tr>
+                                <td>
+                                    <label class="users-table__checkbox">
+                                        <div class="categories-table-img">
+                                            @chapter.ChapterNumber
+                                        </div>
+                                    </label>
+                                </td>
+                                <td>@chapter.ChapterTitle</td>
+                                <td>
+                                    @if (chapter.PublishedDate.HasValue)
+                                    {
+                                        if (chapter.PublishedDate.Value > DateTime.Now)
+                                        {
+                                            <span class="badge-pending">Lên lịch</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge-active">Đã đăng</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="badge-secondary">Chưa đăng</span>
+                                    }
+                                </td>
+                                <td>@(chapter.PublishedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                                <td>@chapter.Views</td>
+                                <td>
+                                    <span class="p-relative">
+                                        <button class="dropdown-btn transparent-btn" type="button" title="Thêm tùy chọn">
+                                            <div class="sr-only">Thêm tùy chọn</div>
+                                            <i data-feather="more-horizontal" aria-hidden="true"></i>
+                                        </button>
+                                        <ul class="users-item-dropdown dropdown">
+                                            <li><a asp-action="Edit" asp-route-id="@chapter.Id">Chỉnh sửa</a></li>
+                                            <li>
+                                                <form asp-action="Delete" asp-route-id="@chapter.ChapterNumber" method="post" class="delete-form" data-id="@chapter.ChapterNumber">
+                                                    @Html.AntiForgeryToken()
+                                                    <button type="button" class="btn-link delete-btn text-danger">Xóa</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <a asp-action="Index" asp-route-comicId="@Model.ComicId" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == 1 ? "disabled" : "")">Trước</a>
+                <span class="badge bg-light text-dark border mx-3 px-3 py-2">Trang @Model.CurrentPage / @Model.TotalPages</span>
+                <a asp-action="Index" asp-route-comicId="@Model.ComicId" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-outline-secondary btn-sm ms-2 @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Sau</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Thêm SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Gắn sự kiện cho tất cả nút xóa
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    const chapterId = form.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: "Bạn có chắc chắn?",
+                        text: "Bạn muốn xóa chương này ? Hành động này không thể hoàn tác!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Hủy",
+                        confirmButtonText: "Xóa"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                    
+                });
+            });
+        });
+    </script>
+}

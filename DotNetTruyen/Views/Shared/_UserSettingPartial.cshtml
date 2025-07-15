@@ -1,0 +1,22 @@
+﻿<div class="col-md-3 col-sm-3">
+    <div class="nav-tabs-wrap">
+        <ul class="nav nav-tabs">
+
+            <li class="@(ViewBag.HistoryTab != null ? "active" : "")">
+                <a href="/readHistory"><i class="icon ion-md-alarm"></i>Lịch sử đọc                    </a>
+            </li>
+
+
+            <li class="@(ViewBag.ProfileTab != null ? "active" : "")">
+                <a href="/userProfile"><i class="icon ion-md-person"></i>Cài đặt tài khoản                   </a>
+            </li>
+
+
+            <li class="@(ViewBag.NotificationTab != null ? "active" : "")">
+                <a href="/userProfile/Notifications"><i class="fas fa-bell"></i>Thông báo</a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+

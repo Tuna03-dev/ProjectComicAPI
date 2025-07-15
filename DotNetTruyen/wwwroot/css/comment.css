@@ -1,0 +1,59 @@
+﻿/* Ensure nested comments are indented */
+.hiddenReply {
+    display: none;
+}
+
+.ml-6 {
+    margin-left: 1.5rem; /* Adjust as needed for indentation */
+}
+
+/* Style the reply form */
+.reply-form textarea {
+    width: 100%;
+    resize: none;
+}
+
+.reply-form button {
+    transition: background-color 0.3s;
+}
+
+.reply-btn i {
+    margin-right: 0.25rem;
+}
+
+.replies-container {
+    /* Add any additional styling if needed */
+}
+.edit-form textarea {
+    width: 100%;
+    resize: none;
+}
+
+.edit-form button {
+    transition: background-color 0.3s;
+}
+
+.bg-dark {
+    background-color: #212122 !important;
+}
+
+#swal2-title {
+    color: #545454;
+}
+
+.scroll-container {
+    height: 800px;
+    overflow: auto; /* Hiển thị thanh cuộn khi nội dung tràn */
+}
+
+a.bg-dark:hover {
+    background-color: #030d09 !important;
+}
+
+
+.btn-like{
+    background-color: #007bff;
+}
+.btn-dislike {
+    background-color: #dc3545;
+}

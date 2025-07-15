@@ -1,0 +1,189 @@
+﻿@model DotNetTruyen.ViewModels.Management.EditComicViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa truyện";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container py-4">
+    <div class="custom-card shadow-sm">
+        <div class="custom-card-body">
+            <h2 class="h4 mb-3">✍️ Chỉnh sửa truyện</h2>
+
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+
+                <!-- Phần Thông tin cơ bản -->
+                <div class="custom-card-section">
+                    <h4 class="h5 mb-3">📌 Thông tin cơ bản</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Ảnh bìa</label>
+                            <div class="mb-2 text-center">
+                                <img id="coverPreview" src="@(Model.CoverImage ?? "/img/default-cover.jpg")"
+                                     alt="Cover Preview" class="img-thumbnail" width="150" height="200">
+                            </div>
+                            <input asp-for="CoverImageFile" type="file" class="form-control custom-input"
+                                   id="coverImageInput" accept="image/*" />
+                            <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label">Tên truyện</label>
+                                <input asp-for="Title" class="form-control custom-input" placeholder="Nhập tên truyện" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Mô tả</label>
+                                <textarea asp-for="Description" class="form-control custom-input" rows="4" placeholder="Nhập mô tả truyện..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần Trạng thái và Tác giả -->
+                <div class="custom-card-section">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">📌 Trạng thái</label>
+                            <select asp-for="Status" class="form-select custom-input">
+                                <option value="false">Đang tiến hành</option>
+                                <option value="true">Hoàn thành</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">✍️ Tác giả</label>
+                            <input asp-for="Author" class="form-control custom-input" placeholder="Nhập tên tác giả" />
+                            <span asp-validation-for="Author" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần Thể loại -->
+                <div class="custom-card-section">
+                    <h4 class="h5">📌 Thể loại</h4>
+                    <div class="mb-3">
+                        <div class="row">
+                            @for (int i = 0; i < Model.Genres.Count; i++)
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="SelectedGenres" class="form-check-input custom-checkbox" value="@Model.Genres[i].Id" @(Model.SelectedGenres.Contains(Model.Genres[i].Id) ? "checked" : "") />
+                                        <label class="form-check-label">@Model.Genres[i].GenreName</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <span asp-validation-for="SelectedGenres" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Nút Cập nhật -->
+                <div class="d-flex justify-content-between">
+                    <a asp-action="Index" class="btn btn-warning">
+                        <i class="fas fa-arrow-left"></i> Quay lại danh sách
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Lưu chỉnh sửa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("coverImageInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("coverPreview").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        .custom-card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-card-body {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .custom-card-section {
+            background: #f2f2f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid #007bff;
+        }
+
+        /* Input & Checkbox */
+        .custom-input {
+            background-color: #fff; /* Đổi màu nền về trắng */
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 8px;
+        }
+
+            .custom-input:focus {
+                border-color: #007bff;
+                outline: none;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+            }
+
+        /* Thiết kế lại checkbox */
+        .custom-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            appearance: none; /* Ẩn mặc định của trình duyệt */
+            border: 2px solid #007bff;
+            border-radius: 4px;
+            display: inline-block;
+            position: relative;
+            background-color: #fff; /* Màu nền trắng để dễ nhìn */
+        }
+
+            .custom-checkbox:checked {
+                background-color: #007bff;
+                border-color: #0056b3;
+            }
+
+                .custom-checkbox:checked::after {
+                    content: '\2713'; /* Dấu check */
+                    font-size: 14px;
+                    color: white;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+
+        /* Hover & Transitions */
+        .custom-input,
+        .custom-checkbox {
+            transition: all 0.2s ease-in-out;
+        }
+
+            .custom-checkbox:hover {
+                border-color: #0056b3;
+            }
+    </style>
+}

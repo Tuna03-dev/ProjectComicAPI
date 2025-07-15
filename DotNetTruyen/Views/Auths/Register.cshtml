@@ -1,0 +1,67 @@
+﻿@using DotNetTruyen.ViewModels
+@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Đăng ký";
+    Layout = "_AuthsLayout.cshtml";
+}
+
+    <div class="modal" id="form-register" tabindex="-1" style="display: block; padding-right: 17px;position: unset;
+    font-family: 'Poppins', sans-serif;" aria-modal="true" role="dialog">
+        <div class="modal-dialog" role="document" style="margin-top:50px">
+            <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" onclick="window.location='/'">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+                <div class="modal-body">
+                    <div id="sign-up" class="login">
+                        <h3>
+                            <a href="https://live.mangabooth.com/x/" title="Madara Child X Theme" tabindex="-1">Đăng ký</a>
+                        </h3>
+                        <p class="text-success">@ViewBag.SuccessRegisterMessage</p>
+                        <p class="message register">@ViewBag.ErrorRegisterMessage</p>
+                        <form name="registerform" id="registerform" asp-controller="Auths" asp-action="Register" method="post">
+                            <p>
+                                <label>
+                                    Tên đăng nhập *                                    
+                                    <input asp-for="UserName" size="20">
+                                </label>
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </p>
+                            <p>
+                                <label>
+                                    Email *                                    
+                                    <input asp-for="Email" size="20">
+                                </label>
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </p>
+                            <p>
+                            <label class="password-container">
+                                    Mật khẩu *
+                                    <input asp-for="Password" id="password" size="25">
+                                <i class="fa-solid fa-eye eye-icon" id="togglePassword" onclick="togglePassword()"></i>
+                                </label>
+                                <span asp-validation-for="Password" class="text-danger"></span>
+                            </p>
+                            <p class="submit">
+                                <input type="submit" class="button button-primary button-large wp-submit" value="Đăng ký">
+                            </p>
+                        </form>
+                        <br />
+                        <div>
+                            <form asp-controller="Auths" asp-action="LoginWithGoogle" asp-route-returnUrl="@ViewData["ReturnUrl"]" method="get">
+                                <button type="submit" class="login-with-google-btn">
+                                    Đăng nhập bằng tài khoản Google
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+
+    </div>
+<script src="~/js/toggleInputPassword.js"></script>

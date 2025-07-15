@@ -1,0 +1,486 @@
+﻿@using DotNetTruyen.ViewModels
+@using DotNetTruyen.ViewModels.Management
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject DotNetTruyen.Services.UserLevelService _userlevelService
+@model UpdateProfileViewModel
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+    var user = await UserManager.GetUserAsync(User);
+    UserLevelViewModel userlevel = await _userlevelService.GetUserLevelInfoAsync(user.Id);
+}
+
+<body class="page-template-default page page-id-7 logged-in wp-embed-responsive header-style-1 sticky-enabled sticky-style-1 text-ui-light minimal-reading-layout">
+    <div class="wrap">
+        <div class="body-wrap">
+            <partial name="_HeaderPartial" />
+            <div class="site-content">
+
+                <div class="c-page-content style-2">
+                    <div class="content-area ">
+                        <div class="container">
+
+                            <div class="row ">
+
+                                <div class="col-md-12 col-sm-12">
+
+                                    <!-- Quang cao
+                                        <div class="ad c-ads custom-code body-top-ads"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/Build-The-Best-Manga-Site.jpg" /></a></div>
+                                    -->
+                                    
+
+                                    <div class="main-col-inner">
+
+                                        <div id="post-7" class="c-blog-post post-7 page type-page status-publish hentry">
+                                            <div class="entry-header">
+                                                <div class="entry-header_wrap">
+                                                    <div class="entry-title">
+                                                        <h1 class="item-title h2">Cài đặt tài khoản</h1>
+                                                    </div>
+
+                                                    <!--<div class="entry-meta">                <div class="post-on">
+                                                                                                    <span class="font-meta">posted on</span>
+                                                                                                    <div class="c-blog__date">
+
+                                                                                                        <span class="posted-on"> <a href="https://live.mangabooth.com/x/user-settings/" rel="bookmark">October 8, 2024</a></span>
+                                                                                                        <span class="post-category"><br /></span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            <div class="post-meta total-count font-meta"></div></div>        </div>-->
+                                                </div>
+
+
+
+                                                <div class="entry-content">
+                                                    <div class="entry-content_wrap">
+
+                                                        <div class="row settings-page">
+                                                            <partial name="_UserSettingPartial" />
+                                                            <div class="col-md-9 col-sm-9">
+                                                                <div class="tabs-content-wrap">
+                                                                    <div class="tab-content">
+                                                                        <div class="tab-pane active">
+                                                                            @if (!string.IsNullOrEmpty(ViewBag.UpdateSuccessMess))
+                                                                            {
+                                                                                <div class="alert alert-success alert-dismissable">
+                                                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                                                                    <strong>@ViewBag.UpdateSuccessMess!</strong>
+                                                                                </div>
+                                                                            }
+                                                                            @if (!string.IsNullOrEmpty(ViewBag.UpdateErrorMess))
+                                                                            {
+                                                                                <div class="alert alert-danger alert-dismissable">
+                                                                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                                                                                    <strong>@ViewBag.UpdateErrorMess!</strong>
+                                                                                </div>
+                                                                            }
+
+                                                                            <input type="hidden" id="_wpnonce" name="_wpnonce" value="84ff829a52" /><input type="hidden" name="_wp_http_referer" value="/x/user-settings/?tab=account-settings" />    <div class="tab-group-item">
+                                                                                <div class="tab-item">
+                                                                                    <div class="choose-avatar">
+                                                                                        <div class="loading-overlay">
+                                                                                            <div class="loading-icon">
+                                                                                                <i class="fas fa-spinner fa-spin"></i>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="c-user-avatar">
+                                                                                            @if (string.IsNullOrEmpty(user.ImageUrl))
+                                                                                            {
+                                                                                                <img alt='' src='https://secure.gravatar.com/avatar/f4e15f26edec400f6317e5a94e418299?s=195&#038;d=mm&#038;r=g' srcset='https://secure.gravatar.com/avatar/f4e15f26edec400f6317e5a94e418299?s=390&#038;d=mm&#038;r=g 2x' class='avatar avatar-195 photo' height='195' width='195' />
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                <img alt='' src='@user.ImageUrl' class='avatar avatar-195 photo' height='195' width='195' />
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    
+                                                                                    <form asp-controller="User" asp-action="UploadAvatar" method="post" enctype="multipart/form-data">
+                                                                                    <div class="form form-choose-avata">
+                                                                                        <div >
+                                                                                            <!--Update Avatar -->
+                                                                                            
+                                                                                                <label>Chỉ dành cho tệp .jpg .png hoặc .jpeg</label>
+                                                                                                <div>
+                                                                                                    <input asp-for="UploadAvatarViewModel.AvatarImage">
+                                                                                                </div>
+                                                                                                <div>
+                                                                                                    <span asp-validation-for="UploadAvatarViewModel.AvatarImage" class="text-danger"></span>
+                                                                                                </div>
+                                                                                                <input type="submit" value="Thay đổi">
+                                                                                            
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="tab-item level-tab">
+                                                                                    
+                                                                                    <div class="level-info card p-4 shadow-lg">
+                                                                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                                            <div class="level-details">
+                                                                                                <h5 class="mb-1">@userlevel.LevelName </h5>
+                                                                                                <small class="level-name">Cấp độ <span class="level-number">@userlevel.LevelNumber</span></small>
+                                                                                            </div>
+                                                                                            <div class="exp-badge">
+                                                                                                <span class="badge bg-dark">@userlevel.CurrentExp / @userlevel.ExpRequiredForNextLevel EXP</span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="exp-info mb-2">
+                                                                                            <small class="text-light">Còn <span class="exp-remaining">@userlevel.ExpToNextLevel</span> EXP để lên cấp</small>
+                                                                                        </div>
+                                                                                        <div class="progress custom-progress" style="height: 12px;">
+                                                                                            <div class="progress-bar bg-warning" role="progressbar" style="width: @userlevel.ProgressPercentage%; transition: width 0.5s ease-in-out;"
+                                                                                                 aria-valuenow="@userlevel.ProgressPercentage" aria-valuemin="0" aria-valuemax="100">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="text-end mt-2">
+                                                                                            <small class="text-light"><span class="progress-percentage">@Math.Round(userlevel.ProgressPercentage, 2)</span>% hoàn thành</small>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="tab-item">
+
+                                                                                    <div class="settings-title">
+                                                                                        <h3>
+                                                                                            Thay đổi tên hiển thị
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label for="name-input" class="col-md-3">Tên hiển thị hiện tại</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <span class="show">@user.NameToDisplay</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <form asp-controller="User" asp-action="ChangeDisplayName" method="post">
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input" class="col-md-3">Tên hiển thị mới</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="text" name="newDisplayName" required>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input-submit" class="col-md-3"></label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="submit" value="Xác nhận">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <div class="tab-item">
+
+                                                                                    <div class="settings-title">
+                                                                                        <h3>
+                                                                                            Thay đổi tên đăng nhập
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label for="name-input" class="col-md-3">Tên đăng nhập hiện tại</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <span class="show">@user.UserName</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <form asp-controller="User" asp-action="ChangeUserName" method="post">
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input" class="col-md-3">Tên đăng nhập mới</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="text" name="newUserName" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input" class="col-md-3">Nhập mật khẩu để xác nhận</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="password" name="confirmPassword" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input-submit" class="col-md-3"></label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="submit" value="Xác nhận">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                <!--
+                                                                                    <div class="tab-item">
+                                                                                    <div class="settings-title">
+                                                                                        <h3>
+                                                                                            Thay đổi địa chỉ email
+                                                                                        </h3>
+                                                                                    </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label for="email-input" class="col-md-3">Địa chỉ email của bạn</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <span class="show">@user.Email</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <form asp-controller="User" asp-action="ChangeEmail" method="post">
+                                                                                    <div class="form-group row">
+                                                                                        <label for="email-input" class="col-md-3">Địa chỉ email mới</label>
+                                                                                        <div class="col-md-9">
+                                                                                            <input class="form-control" type="email" name="newEmail" required>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="name-input" class="col-md-3">Nhập mật khẩu để xác nhận</label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="password" name="confirmPassword" required>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    <div class="form-group row">
+                                                                                        <label for="email-input-submit" class="col-md-3"></label>
+                                                                                        <div class="col-md-9">
+                                                                                            <input class="form-control" type="submit" value="Xác nhận">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                                -->
+                                                                                
+                                                                                @if (!string.IsNullOrEmpty(user.PasswordHash))
+                                                                                {
+                                                                                    
+                                                                                    <div class="tab-item">
+                                                                                        <div class="settings-title">
+                                                                                            <h3>
+                                                                                                Thay đổi mật khẩu
+                                                                                            </h3>
+                                                                                        </div>
+                                                                                        <form asp-controller="User" asp-action="ChangePassword" method="post">
+                                                                                        <div class="form-group row">
+                                                                                            <label for="currrent-password-input" class="col-md-3">Mật khẩu hiện tại</label>
+                                                                                            <div class="col-md-9">
+                                                                                                    <input class="form-control" asp-for="UpdatePasswordViewModel.OldPassword">
+                                                                                                    <span asp-validation-for="UpdatePasswordViewModel.OldPassword" class="text-danger"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="new-password-input" class="col-md-3">Mật khẩu mới</label>
+                                                                                            <div class="col-md-9">
+                                                                                                    <input class="form-control" asp-for="UpdatePasswordViewModel.NewPassword">
+                                                                                                    <span asp-validation-for="UpdatePasswordViewModel.NewPassword" class="text-danger"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="comfirm-password-input" class="col-md-3">Xác nhận mật khẩu</label>
+                                                                                            <div class="col-md-9">
+                                                                                                    <input class="form-control" asp-for="UpdatePasswordViewModel.ConfirmPassword">
+                                                                                                    <span asp-validation-for="UpdatePasswordViewModel.ConfirmPassword" class="text-danger"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="password-input-submit" class="col-md-3"></label>
+                                                                                            <div class="col-md-9">
+                                                                                                <input class="form-control" type="submit" value="Xác nhận" >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                    
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    
+                                                                                    <div class="tab-item">
+                                                                                        <div class="settings-title">
+                                                                                            <h3>
+                                                                                                Thêm mật khẩu
+                                                                                            </h3>
+                                                                                        </div>
+                                                                                        <form asp-controller="User" asp-action="AddPassword" method="post">
+                                                                                        <div class="form-group row">
+                                                                                            <label for="new-password-input" class="col-md-3">Mật khẩu mới</label>
+                                                                                            <div class="col-md-9">
+                                                                                                    <input class="form-control" asp-for="AddPasswordViewModel.NewPassword">
+                                                                                                    <span asp-validation-for="AddPasswordViewModel.NewPassword" class="text-danger"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group row">
+                                                                                            <label for="password-input-submit" class="col-md-3"></label>
+                                                                                            <div class="col-md-9">
+                                                                                                <label id="checkbox-weak-password" style="display:none"><input type="checkbox" id="agree-weak-password" />I agree to use this weak password</label>
+                                                                                                <input class="form-control" type="submit" value="Xác nhận" id="password-input-submit" name="account-form-submit">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        </form>
+                                                                                    </div>
+                                                                                    
+                                                                                }
+
+                                                                            </div>
+
+                                                                        </div>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+
+
+
+                                            </div>
+
+                                        </div>
+
+                                        <!--
+                                            Quang cao
+                                            <div class="ad c-ads custom-code body-bottom-ads"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/Build-The-Best-Manga-Site.jpg" /></a></div>
+                                        -->
+                                        
+
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div><!-- <div class="site-content"> -->
+
+
+
+
+                    <!--
+                    <div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-left"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/1.jpg" /></a></div><div data-scrolltop="210" data-maxtop="510" class="ad c-ads custom-code wall-ads-control wall-ads-right"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="https://live.mangabooth.com/x/wp-content/uploads/2024/11/2.jpg" /></a></div>
+                    -->
+                
+
+            </div> <!-- class="wrap" -->
+        </div> <!-- class="body-wrap" -->
+
+
+        <div class="modal fade" id="frm-wp-manga-buy-coin" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="wp-manga-coin-nonce" value="79f567aeef" />
+                        <input type="hidden" name="wp-manga-chapter" value="" />
+                        <h3>
+                            Premium Chapter
+                        </h3>
+                        <p class="message-sufficient">You are about to spend <span class="coin">-</span> coins to unlock this chapter</p>
+                        <p class="message-lack-of-coin hidden">You do not have enough Coins to buy this chapter</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="button button-primary button-large wp-submit btn-agree">Buy it <i class="fas fa-spinner fa-spin"></i></button>
+                        <button class="button button-secondary button-large btn-cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div><input type="hidden" value="0" id="wp_manga_chapter_coin_user_balance" />            <div class="go-to-top active">
+            <i class="icon ion-md-arrow-up"></i>
+        </div>
+        
+    </div>
+</body>
+
+@section Styles {
+    <style>
+        
+        
+
+            .level-tab .settings-title {
+                color: #ffffff; 
+                border-bottom: 2px solid #444; 
+                padding-bottom: 10px;
+                margin-bottom: 20px;
+            }
+
+                .level-tab .settings-title h3 {
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+
+                .level-tab .settings-title i {
+                    color: #ffd700; 
+                }
+
+     
+        .level-info {
+            background-color: #2c2c2c; 
+            border: none;
+            border-radius: 12px;
+            max-width: 100%; 
+            transition: transform 0.2s ease; 
+        }
+
+          
+
+        .level-details h5 {
+            color: #ffffff; 
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .level-details .level-number {
+            color: #ffd700; 
+        }
+
+        .level-details .level-name {
+            color: #b0b0b0; 
+            font-size: 0.9rem;
+        }
+
+        .exp-badge .badge {
+            background-color: #444; 
+            color: #ffd700; 
+            font-size: 1rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+
+        .exp-info {
+            color: #b0b0b0; 
+        }
+
+            .exp-info .exp-remaining {
+                color: #ffd700; 
+                font-weight: 600;
+            }
+
+
+        .custom-progress {
+            background-color: #444; 
+            border-radius: 8px;
+            overflow: hidden; 
+        }
+
+            .custom-progress .progress-bar {
+                background-color: #ffd700; 
+                border-radius: 8px;
+                transition: width 0.5s ease-in-out; 
+            }
+
+
+        .text-end .text-light {
+            color: #b0b0b0 !important; 
+            font-size: 0.85rem;
+        }
+
+        .progress-percentage {
+            color: #ffd700; 
+            font-weight: 600;
+        }
+
+  
+        
+    </style>
+}

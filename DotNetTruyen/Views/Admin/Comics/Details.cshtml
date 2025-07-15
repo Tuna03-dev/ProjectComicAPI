@@ -1,0 +1,228 @@
+﻿@model DotNetTruyen.ViewModels.Management.ComicDetailViewModel
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+    <!-- Header Section -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <a href="/comics" class="btn btn-primary btn-sm px-3 py-2">
+            <i class="fas fa-arrow-left me-1"></i> Quay lại
+        </a>
+        <div class="d-flex gap-2">
+            <a href="@Url.Action("Edit", "Comics", new { id = Model.Id })" class="btn btn-warning btn-sm px-3 py-2">
+                <i class="fas fa-pencil-alt me-1"></i> Chỉnh sửa
+            </a>
+            <a href="@Url.Action("Index", "Chapters", new { comicId = Model.Id })" class="btn btn-success btn-sm px-3 py-2">
+                <i class="fas fa-book me-1"></i> Quản lý Chapter
+            </a>
+        </div>
+    </div>
+
+    <!-- Comic Info Section -->
+    <div class="row mb-5">
+        <!-- Cover Image -->
+        <div class="col-12 col-md-4 col-lg-3 mb-4 mb-md-0">
+            <div class="card border-0 shadow-lg rounded-3 overflow-hidden">
+                <img src="@Model.CoverImage" class="card-img-top img-fluid" alt="@Model.Title" style="object-fit: cover; height: 350px;">
+            </div>
+        </div>
+
+        <!-- Comic Details -->
+        <div class="col-12 col-md-8 col-lg-9">
+            <div class="card border-0 shadow-lg rounded-3 h-100">
+                <div class="card-body p-4 p-sm-3">
+                    <h1 class="fw-bold text-dark mb-3 fs-2 fs-sm-4">@Model.Title</h1>
+                    <div class="row g-3">
+                        <div class="col-12 col-sm-6">
+                            <p class="mb-2"><strong class="text-muted">Tác giả:</strong> @Model.Author</p>
+                            <p class="mb-2">
+                                <strong class="text-muted">Trạng thái:</strong>
+                                @if (Model.Status)
+                                {
+                                    <span class="badge-active text-dark rounded-pill px-3 py-1">Đang tiến hành</span>
+                                }
+                                else
+                                {
+                                    <span class="badge-success rounded-pill px-3 py-1">Hoàn thành</span>
+                                }
+                            </p>
+                            <p class="mb-2"><strong class="text-muted">Lượt xem:</strong> @Model.View.ToString("N0")</p>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <p class="mb-2"><strong class="text-muted">Lượt thích:</strong> @Model.Likes.ToString("N0")</p>
+                            <p class="mb-2"><strong class="text-muted">Người theo dõi:</strong> @Model.Follows.ToString("N0")</p>
+                            <p class="mb-2">
+                                <strong class="text-muted">Thể loại:</strong>
+                                @foreach (var genre in Model.Genres)
+                                {
+                                    <span class="badge badge-primary rounded-pill px-3 py-1 me-1">@genre</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comic Description -->
+    <div class="card mb-5 border-0 shadow-lg rounded-3">
+        <div class="card-header bg-light rounded-top-3">
+            <h4 class="mb-0 fw-semibold text-dark fs-5">Mô tả</h4>
+        </div>
+        <div class="card-body p-4 p-sm-3">
+            <p class="text-muted lh-base">@Model.Description</p>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 12px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+            
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1.25rem;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .card-footer {
+            background-color: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            padding: 1rem;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #555;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        /* Badges */
+        .badge {
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.35rem 0.75rem;
+        }
+
+        .badge-primary {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .badge-success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .badge-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        /* Buttons */
+        .btn {
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px; /* Bo góc nhẹ để tạo hình vuông mềm mại */
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                color: #fff;
+            }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+        }
+
+            .btn-warning:hover {
+                background-color: #e0a800;
+                color: #212529;
+            }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-success:hover {
+                background-color: #218838;
+                color: #fff;
+            }
+
+        /* Image Styling */
+        .card-img-top {
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+        }
+
+        /* Spacing */
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 1rem;
+        }
+    </style>
+}
+
+@section Scripts {
+    <!-- Không cần script vì đã bỏ phần upload ảnh -->
+}

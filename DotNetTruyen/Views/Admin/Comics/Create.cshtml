@@ -1,0 +1,297 @@
+﻿@model DotNetTruyen.ViewModels.Management.CreateComicViewModel
+
+@{
+    ViewData["Title"] = "Create Comic";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container py-5">
+    <div class="custom-card shadow-lg">
+        <div class="custom-card-body">
+            <h2 class="h4 mb-4 fw-bold text-dark">📖 Thêm truyện mới</h2>
+
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <!-- Phần Thông tin cơ bản -->
+                <div class="custom-card-section">
+                    <h4 class="h5 mb-3 fw-semibold text-dark">📌 Thông tin cơ bản</h4>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-medium">Ảnh bìa</label>
+                            <div class="upload-area mb-3 text-center">
+                                <label for="coverImageInput" class="d-flex flex-column align-items-center justify-content-center p-4 rounded-3 border-dashed">
+                                    <i class="fas fa-cloud-upload-alt fa-2x text-primary mb-2"></i>
+                                    <span class="text-muted">Nhấn để chọn ảnh hoặc kéo thả vào đây</span>
+                                    <span class="text-muted small">Hỗ trợ: JPG, PNG (Tối đa 5MB)</span>
+                                </label>
+                                <input asp-for="CoverImage" type="file" class="d-none" id="coverImageInput" accept="image/*" />
+                                <span asp-validation-for="CoverImage" class="text-danger d-block mt-2"></span>
+                            </div>
+                            <div class="text-center">
+                                <img id="coverPreview" src="~/img/default-cover.jpg" alt="Cover Preview" class="img-thumbnail rounded-3 d-none" style="width: 150px; height: 200px; object-fit: cover;">
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Tên truyện</label>
+                                <input asp-for="Title" class="form-control custom-input" placeholder="Nhập tên truyện" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium">Mô tả</label>
+                                <textarea asp-for="Description" class="form-control custom-input" rows="4" placeholder="Nhập mô tả truyện..."></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần Trạng thái và Tác giả -->
+                <div class="custom-card-section">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">📌 Trạng thái</label>
+                            <select asp-for="Status" class="form-select custom-input">
+                                <option value="false">Đang tiến hành</option>
+                                <option value="true">Hoàn thành</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium">✍️ Tác giả</label>
+                            <input asp-for="Author" class="form-control custom-input" placeholder="Nhập tên tác giả" />
+                            <span asp-validation-for="Author" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phần Thể loại -->
+                <div class="custom-card-section">
+                    <h4 class="h5 mb-3 fw-semibold text-dark">📌 Thể loại</h4>
+                    <div class="mb-3">
+                        <div class="row g-3">
+                            @for (int i = 0; i < Model.Genres.Count; i++)
+                            {
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input type="checkbox" name="GenreIds" class="form-check-input custom-checkbox" value="@Model.Genres[i].Id" id="genre-@i" />
+                                        <label class="form-check-label" for="genre-@i">@Model.Genres[i].GenreName</label>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <span asp-validation-for="GenreIds" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Nút Đăng truyện -->
+                <div class="d-flex justify-content-between gap-2">
+                    <a asp-action="Index" class="btn btn-warning btn-sm px-3 py-2">
+                        <i class="fas fa-arrow-left me-1"></i> Quay lại danh sách
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-sm px-3 py-2">
+                        <i class="fas fa-upload me-1"></i> Đăng truyện
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("coverImageInput").addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const previewImage = document.getElementById("coverPreview");
+                    previewImage.src = e.target.result;
+                    previewImage.classList.remove("d-none");
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}
+
+@section Styles {
+    <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        /* Card Styling */
+        .custom-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+        }
+
+            .custom-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            }
+
+        .custom-card-body {
+            background: #ffffff;
+            padding: 0;
+            border-radius: 12px;
+        }
+
+        .custom-card-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid #007bff;
+            transition: background 0.3s ease;
+        }
+
+            .custom-card-section:hover {
+                background: #f1f3f5;
+            }
+
+        /* Typography */
+        h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #555;
+        }
+
+        /* Input & Select */
+        .custom-input {
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+            .custom-input:focus {
+                border-color: #007bff;
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+                outline: none;
+            }
+
+        /* Upload Area */
+        .upload-area {
+            background: #f8f9fa;
+            border: 2px dashed #ced4da;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .upload-area:hover {
+                border-color: #007bff;
+                background: #e9ecef;
+            }
+
+            .upload-area label {
+                cursor: pointer;
+                color: #6c757d;
+            }
+
+            .upload-area:hover label {
+                color: #007bff;
+            }
+
+        /* Checkbox */
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            appearance: none;
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            position: relative;
+            background-color: #fff;
+            transition: all 0.2s ease;
+        }
+
+            .custom-checkbox:checked {
+                background-color: #007bff;
+                border-color: #0056b3;
+            }
+
+                .custom-checkbox:checked::after {
+                    content: '\2713';
+                    font-size: 14px;
+                    color: white;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                }
+
+            .custom-checkbox:hover {
+                border-color: #0056b3;
+            }
+
+        .form-check-label {
+            font-size: 0.95rem;
+            color: #555;
+            cursor: pointer;
+        }
+
+        /* Buttons */
+        .btn {
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background-color: #0056b3;
+                color: #fff;
+            }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border: none;
+            color: #212529;
+        }
+
+            .btn-warning:hover {
+                background-color: #e0a800;
+                color: #212529;
+            }
+
+        /* Spacing */
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 1rem;
+        }
+    </style>
+}

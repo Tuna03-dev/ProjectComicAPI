@@ -1,0 +1,10 @@
+﻿@model IEnumerable<System.Security.Claims.Claim>
+
+<h1>Danh sách Claims</h1>
+
+<ul>
+    @foreach (var claim in Model)
+    {
+        <li><strong>@claim.Type</strong>: @claim.Value</li> 
+    }
+</ul>

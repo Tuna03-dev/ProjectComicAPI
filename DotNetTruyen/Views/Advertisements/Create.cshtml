@@ -1,0 +1,54 @@
+﻿@model DotNetTruyen.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Create Advertisement";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+    
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg p-4 border-0 rounded-3">
+        <h2 class="text-center text-primary fw-bold">Tạo quảng cáo</h2>
+        <hr />
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form asp-action="Create" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label fw-bold">Vị Trí:</label>
+                        <input asp-for="Title" class="form-control border-primary shadow-sm" placeholder="Nhập vị trí" required />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="LinkTo" class="form-label fw-bold">Liên Kết: </label>
+                        <input asp-for="LinkTo" class="form-control border-primary shadow-sm" placeholder="Nhập liên kết..." required />
+                        <span asp-validation-for="LinkTo" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageUrl" class="form-label fw-bold">Chọn Ảnh: </label>
+                        <input type="file" asp-for="ImageUrl" class="form-control border-primary shadow-sm"  />
+                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="CreatedAt" value="@DateTime.UtcNow" />
+                    <input type="hidden" asp-for="UpdatedAt" value="@DateTime.UtcNow" />
+                    <input type="hidden" asp-for="UpdatedBy" value="System" />
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2">Trở về</a>
+                        <button type="submit" class="btn btn-primary px-4 py-2 fw-bold shadow" style="color: white">Tạo quảng cáo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,60 @@
+.wp-manga-chapter .coin{background:#dcdcdc; padding: 3px 5px; border-radius: 3px; width: 50px; margin-right: 10px; display: inline-block; text-align: center}
+.wp-manga-chapter.premium-block .coin{background:#fe6a10; color: #FFF}
+.coin i{padding-right: 5px}
+.premium .fas.fa-lock, .premium .fas.fa-lock-open{margin:0 10px}
+
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    color: #fff;
+    -webkit-transition: background-color 200ms ease;
+    -moz-transition: background-color 200ms ease;
+    -o-transition: background-color 200ms ease;
+    transition: background-color 200ms ease;
+}
+
+
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button.button-primary{background-color: #eb3349;}
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button.button-primary:hover{background-color: #f45e70;}
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button.button-primary i{display:none}
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button.button-primary.disabled i{display:inline-block}
+
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .button.btn-cancel{background-color: #CCC;}
+
+body.modal-open #frm-wp-manga-buy-coin.modal .modal-content .modal-footer{padding: 20px}
+#frm-wp-manga-buy-coin .coin{color:#FF0000; font-size:1.5em}
+
+.message-sufficient.hidden{display: none}
+.message-lack-of-coin.hidden{display: none}
+
+.content-blocked.premium-block{padding:100px 0; background:#F2F2F2; border: 1px solid #CCC; text-align: center;}
+.content-blocked.premium-block a{color:#FF0000}
+
+.wp-manga-chapter-coin-shortcode.shortcode-my-bought .title{margin-bottom: 20px}
+
+.user-balance-panel .user-balance{display: block}
+.user-balance{font-size:20px; font-weight: bold}
+
+.shortcode-top-bought .item-thumb{position: relative}
+.shortcode-top-bought .item-thumb .index{position: absolute; top: 5px; right: 5px; display: inline-block; width: 40px; height: 40px; font-size:19px; text-align: center; background: rgba(255, 248, 26, 0.6); border-radius: 999em}
+.shortcode-top-bought .item-thumb .index.index-1{font-size:25px; width: 50px; height: 50px}
+
+.wp-manga-chapter-coin-shortcode .badge-pos-2 .manga-title-badges{position: absolute; top: 5px; left: 5px}
+
+.form.myCRED-buy-form .form-group{}
+.form.myCRED-buy-form{text-align: center; background:#f2f2f2; padding: 20px 40px; border: 1px solid #CCC; width: 100%}
+
+.form.myCRED-buy-form label, .form.myCRED-buy-form .form-control-static{font-size: 24px; font-weight: bold}
+.form.myCRED-buy-form .form-control-static{color:#FF0000; font-size: 50px}
+button#checkout-action-button, .form.myCRED-buy-form input[type="submit"]{background:#007bff; color:#FFF}
+.form.myCRED-buy-form input[type="submit"]:hover{background:#0069d9; color:#FFF}
+.form.myCRED-buy-form input[name="amount"]{background:#FFF; font-size: 24px}
+
+.widget.widget-my-cred .myCRED-balance{font-size: 20px; font-weight: bold; text-align: left} 
+.widget.widget-my-cred .myCRED-balance:before{content:"\f51e"; font-family: "Font Awesome 5 Free"; font-weight: 900; margin: 0 5px}
+
+.manga-shortcodes.manga-chapters-listing .coin{display: none}
+
+body.chapter-blocked .chapter-type-manga .c-blog-post .entry-content .entry-content_wrap .reading-content::before{content:'';display:none}

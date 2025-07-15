@@ -1,0 +1,363 @@
+﻿@model DotNetTruyen.ViewModels.ReadChapterViewModel
+@{
+	ViewData["Title"] = $"{Model.Chapter.Comic.Title} - Chapter {Model.Chapter.ChapterNumber}";
+}
+
+<body class="wp-manga-template-default single single-wp-manga postid-249 wp-embed-responsive wp-manga-page reading-manga click-to-scroll keyboard-navigate page header-style-1 sticky-enabled sticky-style-1 text-ui-light manga-reading-list-style minimal-reading-layout">
+
+
+
+	<div class="wrap">
+		<div class="body-wrap">
+			<div class="site-content">
+				<div class="c-page-content style-1 reading-content-wrap chapter-type-manga" data-site-url="https://live.mangabooth.com/x/">
+					<div class="content-area">
+						<div class="container">
+							<div class="row">
+								<div class="main-col col-sm-12 sidebar-hidden">
+									<div class="d-flex justify-content-between align-items-center">
+										<div class="prev-chap-item">
+											<a style="font-size:22px" href="@Url.Action("Index", "Detail", new { id = Model.Chapter.ComicId })" class="back-to-manga-detail"><i class="fa fa-chevron-left" aria-hidden="true"></i></a>
+											<div class="chap-item">
+												<a href="@Url.Action("Index", "Detail", new { id = Model.Chapter.ComicId })" title="@Model.Chapter.Comic.Title">
+													<img width="75" height="106" src="@Model.Chapter.Comic.CoverImage" alt="@Model.Chapter.Comic.Title" style="padding-top:106px;" />
+												</a>
+												<h3><a href="@Url.Action("Index", "Detail", new { id = Model.Chapter.ComicId })" title="@Model.Chapter.Comic.Title">@Model.Chapter.Comic.Title</a></h3>
+
+											</div>
+										</div>
+										<!-- <div class="chapter-nav">
+											<button type="button" class="prev"><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+											<button type="button" class="next"><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+										</div> -->
+									</div>
+									<h1 id="chapter-heading">
+										<div>
+											<h1 class="h4 mb-0">
+												<a href="@Url.Action("Index", "Detail", new { id = Model.Chapter.ComicId })" class="text-white hover:text-primary">
+													@Model.Chapter.Comic.Title
+												</a>
+												<span class="text-gray-400 mx-2"></span>
+												<span class="text-light">Chapter @Model.Chapter.ChapterNumber</span>
+											</h1>
+											@if (!string.IsNullOrEmpty(Model.Chapter.ChapterTitle))
+											{
+												<p class="text-gray-400 mt-1">@Model.Chapter.ChapterTitle</p>
+												<h3> @Model.Chapter.PublishedDate?.ToString("dd/MM/yyyy")</h3>
+											}
+										</div>
+									</h1>
+									<!-- container & no-sidebar-->
+									<div class="main-col-inner">
+										<div class="c-blog-post">
+											<div style="display: none;" class="entry-header header" id="manga-reading-nav-head" data-position="header" data-chapter="chapter-1" data-id="249">
+												<div class="wp-manga-nav">
+													<div class="entry-header_wrap">
+
+														<div class="c-breadcrumb-wrapper">
+
+
+															<div class="c-breadcrumb">
+																<ol class="breadcrumb">
+																	<li>
+																		<a href="https://live.mangabooth.com/x/">
+																			Home
+																		</a>
+																	</li>
+
+
+																	<li>
+																		<a href="https://live.mangabooth.com/x/manga/manga-17-2/">
+																			Magokoro Scramble! ~What lies in your heart?~
+																		</a>
+																	</li>
+
+																	<li class="active">
+																		Chapter 1 - Other Name 1
+																	</li>
+
+																</ol>
+															</div>
+
+															<div class="action-icon">
+																<ul class="action_list_icon list-inline">
+																	<li>
+																		<script type="text/javascript">var requireLogin2BookMark = true;</script><a href="#" class="wp-manga-action-button" data-action="bookmark" data-post="249" data-chapter="230" data-page="1" title="Bookmark"><i class="icon ion-ios-bookmark"></i></a>
+																	</li>
+																	<li><a href="#" class="wp-manga-action-button" data-action="toggle-contrast" title="Toggle Dark/Light Mode"><i class="icon ion-md-contrast"></i></a></li>
+																</ul>
+															</div>
+														</div>
+
+													</div>
+
+													<div class="select-view">
+
+														<!-- select host -->
+														<div class="c-selectpicker selectpicker_version">
+															<label>
+																<select class="selectpicker host-select">
+																	<option class="short" data-limit="40" value="local" data-redirect="https://live.mangabooth.com/x/manga/manga-17-2/chapter-1/?host=local" selected="selected">Server 1</option>
+																</select>
+															</label>
+														</div>
+
+														<!-- select volume -->
+														<!-- select chapter -->
+														<div class="chapter-selection chapters_selectbox_holder" data-manga="249" data-chapter="chapter-1" data-vol="0" data-type="manga" data-style="list">
+															<!-- place holder -->
+														</div>
+													</div>
+													<div class="select-pagination">
+														<div class="nav-links">
+															<i class="mobile-nav-btn icon ion-md-menu"></i>
+
+															<div class="nav-next  free-chap">
+																<a href="https://live.mangabooth.com/x/manga/manga-17-2/chapter-2/" class="btn next_page">
+																	Next
+																</a>
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</div>
+											<div class="entry-content">
+												<div class="entry-content_wrap">
+
+													<div class="read-container">
+														<!--<div class="ad c-ads custom-code body-top-ads"><a href="https://mangabooth.com/product/wp-manga-theme-madara/"><img src="images/Build-The-Best-Manga-Site.jpg"></a></div>-->
+														
+														<div class="reading-content">
+															<input type="hidden" id="wp-manga-current-chap" data-id="230" value="chapter-1">
+															<input type="hidden" id="chapter_lightbox" value="1"><div class="chapter-images">
+
+																<div class="page-break ">
+
+																	<div class="chapter-images">
+																		@if (Model.Chapter.Images != null && Model.Chapter.Images.Any())
+																		{
+																			@foreach (var image in Model.Chapter.Images.OrderBy(i => i.ImageNumber))
+																			{
+																				<div class="page-break mb-4 text-center">
+																					<img src="@image.ImageUrl"
+																						 class="img-fluid rounded mx-auto d-block"
+																						 alt="Chapter @Model.Chapter.ChapterNumber - Image @image.ImageNumber">
+																				</div>
+																			}
+																		}
+																		else
+																		{
+																			<div class="text-center py-5">
+																				<i class="fas fa-image fa-4x text-gray-600 mb-3"></i>
+																				<p class="text-gray-400">Không có hình ảnh nào cho chương này.</p>
+																			</div>
+																		}
+																	</div>
+
+																</div>
+
+															</div>
+														</div>
+
+													</div>
+
+													<div class="row">
+														<div class="">
+															<!-- comments-area -->
+															<!-- END comments-area -->
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="text-reading-footer">
+							<div class="container d-flex justify-content-between">
+								<div class="left-footer">
+									<button class="hamburger open-chaps-list-canvas" type="button" data-toggle="modal" data-target="#chaptersModal"><i class="fa fa-bars" aria-hidden="true"></i></button>
+									<h5 class="chap-name">Chapter @Model.Chapter.ChapterNumber</h5>
+								</div>
+								<div class="right-footer">
+									<div class="d-flex justify-content-between align-items-center">
+										<div>
+											<a href="@Url.Action("Index", "Detail", new { id = Model.Chapter.ComicId })"
+											   class="btn btn-primary">
+												<i></i> Xem Chi Tiết truyện
+											</a>
+										</div>
+										<div>
+											@if (Model.PreviousChapter != null)
+											{
+												<a href="@Url.Action("Index", "ReadChapter", new { id = Model.PreviousChapter.Id })"
+												   class="btn btn-outline-secondary">
+													<i class="fas fa-chevron-left"></i> Chương trước
+												</a>
+											}
+											else
+											{
+												<button class="btn btn-outline-secondary" disabled>
+													<i class="fas fa-chevron-left"></i> Chương trước
+												</button>
+											}
+										</div>
+
+										<div>
+											@if (Model.NextChapter != null)
+											{
+												<a href="@Url.Action("Index", "ReadChapter", new { id = Model.NextChapter.Id })"
+												   class="btn btn-outline-secondary">
+													Chương sau <i class="fas fa-chevron-right"></i>
+												</a>
+											}
+											else
+											{
+												<button class="btn btn-outline-secondary" disabled>
+													Chương sau <i class="fas fa-chevron-right"></i>
+												</button>
+											}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="modal offcanvas-menu shadow pr-0" id="chaptersModal" tabindex="-1" aria-labelledby="chaptersModalLabel" aria-hidden="true" data-backdrop="">
+							<div class="m-0 h-100">
+								<div class="modal-content border-0 rounded-0">
+									<div class="manga">
+										<h3>@Model.Chapter.Comic.Title</h3>
+										<div class="meta d-flex gap-3">
+											<span class="views">
+												<i class="fa fa-eye"></i> @Model.Chapter.Comic.View
+											</span>
+											<span class="follow">
+												<i class="fas fa-bookmark"></i>
+												@Model.Chapter.Comic.Follows.Count
+											</span>
+										</div>
+										<div class="description-summary">
+											<div class="summary__content">
+												<p>@Model.Chapter.Comic.Description</p>
+											</div>
+										</div>
+									</div>
+									<div class="chapters">
+										<div class="c-blog__heading font-heading d-flex justify-content-between align-items-center" style="margin-bottom:5px">
+											<h2 class="h4">
+												Danh Sách Chương
+											</h2>
+											<div class="d-flex gap-2">
+												<button id="sort-desc" class="btn btn-secondary rounded">
+													<i class="fas fa-sort-amount-down"></i>
+												</button>
+												<button id="sort-asc" class="btn btn-secondary rounded">
+													<i class="fas fa-sort-amount-up"></i>
+												</button>
+											</div>
+										</div>
+										<div class="page-content-listing single-page">
+											<div class="listing-chapters_wrap cols-2 show-more">
+												<div id="chapter-list" class="overflow-y-auto" style="max-height: 500px;">
+													@if (Model.Chapter.Comic.Chapters?.Any(c => c.IsPublished && c.DeletedAt == null) == true)
+													{
+														foreach (var chapter in Model.Chapter.Comic.Chapters.Where(c => c.IsPublished && c.DeletedAt == null))
+														{
+															<a href="@Url.Action("Index", "ReadChapter", new { id = chapter.Id })"
+															   data-chapter="@chapter.ChapterNumber"
+															   class="d-flex justify-content-between align-items-center p-3 bg-secondary text-white rounded-lg mb-2 text-decoration-none hover-bg-dark">
+																<span class="text-light font-weight-medium">Chapter @chapter.ChapterNumber</span>
+																<span class="text-justify small">
+																	@(chapter.PublishedDate?.ToString("dd/MM/yyyy") ?? chapter.CreatedAt?.ToString("dd/MM/yyyy"))
+																</span>
+															</a>
+														}
+													}
+													else
+													{
+														<div class="text-center py-5 text-muted">Chưa có chương nào được xuất bản</div>
+													}
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+           <div class="go-to-top active">
+					<i class="icon ion-md-arrow-up"></i>
+				</div>
+				
+				
+			</div>
+		</div>
+	</div>
+		
+	
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			const chapterList = document.getElementById('chapter-list');
+			const sortDescBtn = document.getElementById('sort-desc');
+			const sortAscBtn = document.getElementById('sort-asc');
+
+			function sortChapters(order) {
+				const chapters = Array.from(chapterList.getElementsByTagName('a'));
+				chapters.sort((a, b) => {
+					const numA = parseInt(a.dataset.chapter);
+					const numB = parseInt(b.dataset.chapter);
+					return order === 'asc' ? numA - numB : numB - numA;
+				});
+				chapterList.innerHTML = ''; // Xóa danh sách cũ
+				chapters.forEach(chapter => chapterList.appendChild(chapter)); // Thêm lại danh sách mới
+			}
+
+			sortDescBtn.addEventListener('click', () => sortChapters('desc'));
+			sortAscBtn.addEventListener('click', () => sortChapters('asc'));
+		});
+	</script>
+</body>
+@section Scripts {
+	<script>
+		$(document).ready(function () {
+			let timeSpent = 0;
+			const chapterId = '@Model.Chapter.Id';
+			const requiredTime = 30000; // 1 phút = 60000 milliseconds
+			// Bắt đầu đếm thời gian
+			const timer = setInterval(function () {
+				timeSpent += 1000; // Tăng mỗi giây
+
+				if (timeSpent >= requiredTime) {
+					// Gửi request cập nhật khi đủ 1 phút
+					$.ajax({
+						url: '@Url.Action("UpdateViewCount", "ReadChapter")',
+						type: 'POST',
+						data: { chapterId: chapterId },
+						success: function (response) {
+							if (response.success) {
+								console.log('View count updated successfully');
+							}
+						},
+						error: function (xhr, status, error) {
+							console.log('Error updating view count: ' + error);
+						}
+					});
+
+					// Dừng timer sau khi cập nhật
+					clearInterval(timer);
+				}
+			}, 1000); // Cập nhật mỗi giây
+
+			// Xử lý khi người dùng rời trang trước 1 phút
+			$(window).on('unload', function () {
+				clearInterval(timer);
+			});
+		});
+	</script>
+}

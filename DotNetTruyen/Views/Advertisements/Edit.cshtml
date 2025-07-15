@@ -1,0 +1,97 @@
+﻿@model DotNetTruyen.ViewModels.Management.AdvertisementsViewModel
+
+@{
+    ViewData["Title"] = "Chỉnh sửa quảng cáo";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+   
+}
+
+<div class="container py-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">Chỉnh sửa quảng cáo</h2>
+        </div>
+        
+        <div class="card-body">
+            <form asp-action="Edit" enctype="multipart/form-data" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+                
+                <div class="mb-4">
+                    <label asp-for="Title" class="form-label fw-bold">Vị trí:</label>
+                    <input asp-for="Title" class="form-control form-control-lg" placeholder="Nhập tiêu đề quảng cáo" required />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="LinkTo" class="form-label fw-bold">Liên Kết:</label>
+                    <input asp-for="LinkTo" class="form-control form-control-lg" placeholder="Nhập URL liên kết" required />
+                    <span asp-validation-for="LinkTo" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Ảnh quảng cáo:</label>
+                    @if (!string.IsNullOrEmpty(Model.ImageUrlPath))
+                    {
+                        <div class="mb-2">
+                            <img src="@Model.ImageUrlPath" alt="Ảnh hiện tại" class="img-fluid" style="max-width: 200px;" />
+                            
+                        </div>
+                    }
+                    <label asp-for="ImageUrl" class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
+                    <div class="input-group">
+                        <input type="file" asp-for="ImageUrl" class="form-control" accept="image/*" optional />
+                        <span class="input-group-text">
+                            <i class="fas fa-upload"></i>
+                        </span>
+                    </div>
+                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                    <small class="form-text text-muted">Chọn file ảnh (jpg, png, gif) nếu muốn thay đổi ảnh cũ</small>
+                </div>
+
+                <input type="hidden" asp-for="ImageUrlPath"/>
+                <input type="hidden" asp-for="Id" />
+                
+               
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <a asp-action="Index" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Trở về danh sách
+                    </a>
+                    <button type="submit" class="btn btn-primary btn-lg" style="color: white">
+                        <i class="fas fa-save"></i> Lưu thay đổi
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+        document.addEventListener("DOMContentLoaded", function () {
+    const fileInput = document.querySelector('input[type="file"]');
+    fileInput.addEventListener("change", function () {
+        if (this.files.length === 0) {
+            this.removeAttribute("required");
+        }
+    });
+});
+    </script>
+}

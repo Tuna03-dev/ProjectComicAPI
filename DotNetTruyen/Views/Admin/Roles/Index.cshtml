@@ -1,0 +1,113 @@
+﻿@model DotNetTruyen.ViewModels.Management.RoleIndexViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+@if (TempData["TypeMessage"] != null && TempData["Message"] != null)
+{
+    <div id="autoDismissAlert" class="@TempData["TypeMessage"]" role="alert">
+        @TempData["Message"]
+    </div>
+}
+
+<h1 class="mb-4">Danh sách người dùng</h1>
+
+<!-- Search & Add -->
+<div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+
+    <form method="get" asp-action="Index" class="d-flex align-items-center">
+        <div class="search-wrapper">
+            <i data-feather="search" aria-hidden="true"></i>
+            <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Nhập tên">
+            <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+        </div>
+    </form>
+
+        <a class="btn btn-primary" href="/Roles/Create"> <i class="fas fa-plus"></i> Thêm vai trò mới</a>
+</div>
+
+<div class="users-table table-wrapper ">
+    <table class="posts-table">
+        <thead>
+            <tr class="users-table-info">
+                <th>Tên</th>
+                <th>Quyền</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var role in Model.Roles)
+            {
+                <tr>
+                    <td>
+                        @role.Name
+                    </td>
+                    <td>
+                        @role.Permission
+                    </td>
+                    @if (role.Name != "Admin" && role.Name != "Reader")
+                    {
+                        <td>
+                            <span class="p-relative">
+                                <button class="dropdown-btn transparent-btn" type="button" title="More info">
+                                    <div class="sr-only">More info</div>
+                                    <i data-feather="more-horizontal" aria-hidden="true"></i>
+                                </button>
+
+                                <ul class="users-item-dropdown dropdown">
+                                    <li><a asp-action="Edit" asp-route-id="@role.Id">Chỉnh sửa</a></li>
+                                    <li><a asp-action="Delete" asp-route-id="@role.Id" class="delete-link">Xóa</a></li>
+                                </ul>
+
+                            </span>
+                        </td>
+                    }
+                    else
+                    {
+                        <td></td>
+                    }
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-end mt-3">
+        <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == 1 ? "disabled" : "")">Trước</a>
+        <span class="badge bg-light text-dark border mx-3 px-3 py-2">Trang @Model.CurrentPage / @Model.TotalPages</span>
+        <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-outline-secondary btn-sm ms-2 @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Sau</a>
+    </div>
+</div>
+
+
+<script>
+    setTimeout(() => {
+        let alert = document.getElementById("autoDismissAlert");
+        if (alert) {
+            alert.style.display = "none";
+        }
+    }, 3000);
+
+    document.querySelectorAll(".delete-link").forEach(link => {
+        link.addEventListener("click", async function(event) {
+            event.preventDefault();
+            const result = await Swal.fire({
+                title: 'Xác nhận',
+                text: 'Bạn có chắc chắn muốn xóa không?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Có',
+                cancelButtonText: 'Không',
+                reverseButtons: true
+            });
+
+            if (result.isConfirmed) {
+                window.location.href = this.href;
+            } else {
+                notyf.error("Đã hủy lưu thay đổi!");
+            }
+        });
+    });
+</script>

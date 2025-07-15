@@ -1,0 +1,52 @@
+﻿@model DotNetTruyen.Models.Advertisement
+
+@{
+    ViewData["Title"] = "Advertisement Details";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+   
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Chi Tiết của quảng cáo</h4>
+            <a asp-action="Index" class="btn btn-light btn-sm">Trở về danh sách</a>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-0">
+                <dt class="col-sm-3 col-md-2 fw-bold text-muted">
+                    Vị Trí: 
+                </dt>
+                <dd class="col-sm-9 col-md-10">
+                    @Html.DisplayFor(model => model.Title)
+                </dd>
+
+                <dt class="col-sm-3 col-md-2 fw-bold text-muted">
+                    Liên kết:
+                </dt>
+                <dd class="col-sm-9 col-md-10">
+                    <a href="@Model.LinkTo" target="_blank" class="text-primary">@Html.DisplayFor(model => model.LinkTo)</a>
+                </dd>
+
+                <dt class="col-sm-3 col-md-2 fw-bold text-muted">
+                    Hình ảnh: 
+                </dt>
+                <dd class="col-sm-9 col-md-10">
+                    <img src="@Model.ImageUrl" alt="Advertisement Image" class="img-fluid rounded" style="max-height: 150px; max-width: 100%;">
+                </dd>
+
+            
+
+                <dt class="col-sm-3 col-md-2 fw-bold text-muted">
+                   Ngày Tạo:
+                </dt>
+                <dd class="col-sm-9 col-md-10">
+                    @Html.DisplayFor(model => model.CreatedAt)
+                </dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-light text-end">
+            <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-primary me-2" style="color: white">
+                <i class="fas fa-edit"></i> Chỉnh Sửa
+            </a>
+           

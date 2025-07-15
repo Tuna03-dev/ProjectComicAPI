@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Xác nhận Email";
+    Layout = "_AuthsLayout.cshtml";
+}
+
+    <div class="modal" id="form-reset" tabindex="-1" style="display: block; padding-right: 17px;position: unset;
+    font-family: 'Poppins', sans-serif;" aria-modal="true" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <div id="reset" class="login">
+                        <h3>
+                            <p>Nhập mã OTP</p>
+                        </h3>
+                        @if (string.IsNullOrEmpty(ViewBag.ErrorOtpConfirmMessage))
+                        {
+                            <p>@ViewBag.ConfirmEmailMessage</p>
+                        }
+                        else
+                        {
+                            <p class="text-danger">@ViewBag.ErrorOtpConfirmMessage</p>
+                        }
+                        
+                        <form asp-controller="Auths" asp-action="OtpConfirmRegister" method="post">
+                            <p>
+                                <label>
+                                    Mã OTP
+                                    <br>
+                                <input type="text" name="otp" class="input" value="@ViewBag.Otp" size="20" required>
+                                </label>
+                            </p>
+                            <p class="submit">
+                                <input type="submit" name="wp-submit" class="button button-primary button-large wp-submit" value="Xác nhận" />
+                            </p>
+                            <input type="hidden" name="emailConfirm" value="@ViewBag.Email" />
+                        </form>
+                        <form asp-controller="Auths" asp-action="ReSendOtp" method="post">
+                            <p class="submit">
+                            <input type="submit" name="wp-submit" class="button button-primary button-large wp-submit" value="Gửi lại mã Otp" style="margin-left:20px"/>
+                            </p>
+                            <input type="hidden" name="emailConfirm" value="@ViewBag.Email" />
+                        <input type="hidden" name="request" value="OtpConfirmRegister" /> 
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer"></div>
+            </div>
+        </div>
+
+    </div>
+

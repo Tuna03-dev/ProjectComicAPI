@@ -1,0 +1,44 @@
+.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter{min-height: 50px}
+.listing-chapters_wrap .wp-manga-chapter .chapter-thumbnail{float: left; margin: 0 20px 0 0}
+.listing-chapters_wrap .wp-manga-chapter .chapter-thumbnail img.thumb {max-height: 100px}
+body.manga-page .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li.has-thumb{height:120px; padding:10px 0}
+body.manga-page .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li.has-thumb:after{bottom: 0; clear: both}
+
+.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb{display: table; width: 100%}
+.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb .chapter-thumbnail{display: table-cell; padding: 20px 20px 0 0; margin: 0; width: 100px; float: none; vertical-align: top}
+.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb a{display: table-cell; vertical-align: top}
+.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb .chapter-release-date{display: table-cell; vertical-align: middle; position: relative !important;
+    top: 0 !important;    transform: initial !important;    width: 100px;    text-align: right;}
+	
+@media (max-width:480px){
+	body.manga-page .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li.has-thumb{height: auto;}
+	.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb .chapter-thumbnail{max-width: 100px}
+	.listing-chapters_wrap .wp-manga-chapter .chapter-thumbnail img.thumb{max-width:100%; height: auto}
+	body.manga-page .page-content-listing.single-page .listing-chapters_wrap > ul li.has-thumb a{padding: 0 !important}
+	.chapter-listing-1 .listing-chapters_wrap > ul.main.version-chap li.has-thumb .chapter-thumbnail{padding-top:10px}
+}
+
+/** style 2 **/
+body.manga-page .chapter-listing-2  .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li.has-thumb{height: auto; min-height: 100px}
+.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter .chapter-thumbnail{float: none}
+body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul li.has-thumb a:not(.has-child),body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li .wp-manga-chapter.has-thumb a:not(:hover){position: absolute; left: 20px; text-shadow:1px 1px 1px #333; top: 0; color:#FFF}
+body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li.has-thumb .chapter-release-date{position: absolute; left: 20px; right: auto; top: auto; bottom: 0;text-shadow:1px 1px 1px #333; font-size:0.8em; color:#FFF}
+.chapter-listing-2 .chapter-thumbnail{position: relative}
+.chapter-listing-2 .chapter-thumbnail:after{content:' ';width:100%; height: 100%; background:rgba(0,0,0,0.2); position: absolute; top:0; left: 0}
+.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter.has-thumb .chapter-thumbnail img.thumb{max-height: none}
+.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter.has-thumb .chapter-thumbnail{margin-right: 0}
+@media (max-width:480px){
+	.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter.has-thumb .chapter-thumbnail img.thumb{max-width:100%; height: auto}
+	body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul li a, body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul li.has-thumb a:not(.has-child), body.manga-page .chapter-listing-2 .page-content-listing.single-page .listing-chapters_wrap > ul.main.version-chap li .wp-manga-chapter.has-thumb a:not(:hover){top: 10px}
+	.chapter-listing-2 .listing-chapters_wrap .wp-manga-chapter.has-thumb .chapter-thumbnail img.thumb{max-width: none}
+	
+}
+
+/* support chapter coin tag */
+.chapter-listing-2 .wp-manga-chapter.has-thumb .coin{position: absolute; right: 0; z-index: 1; margin-right: 0}
+.chapter-listing-1 .wp-manga-chapter.has-thumb .coin{position: absolute; left: 0; z-index: 1; }
+
+/* support shortcode */
+.manga-shortcodes.manga-chapters-listing .release.has-thumb{position: relative}
+.manga-shortcodes.manga-chapters-listing .release.has-thumb .chapter-thumbnail{margin-bottom: 10px}
+.manga-shortcodes.manga-chapters-listing .release.has-thumb .coin{position: absolute;    background: #ffffffb8;    padding: 3px;}

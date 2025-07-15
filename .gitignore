@@ -1,0 +1,68 @@
+<<<<<<< HEAD
+bin/
+obj/
+.vs/
+=======
+# ASP.NET Core .gitignore
+
+## Thư mục và file của Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build output
+bin/
+obj/
+
+## Log, lock và temp files
+*.log
+*.lock
+*.cache
+*.tmp
+*.pdb
+
+## Các file của hệ thống
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+## Config và môi trường
+appsettings.*.json
+secrets.json
+*.ps1
+*.sh
+*.cmd
+*.bat
+
+## Các file của Rider và ReSharper (nếu dùng JetBrains)
+.idea/
+*.DotSettings.user
+
+## Node.js nếu có frontend (React, Angular, Vue)
+node_modules/
+npm-debug.log
+yarn.lock
+package-lock.json
+
+## Docker nếu dùng
+.dockerignore
+Dockerfile
+
+## Các file database nếu dùng SQLite
+*.mdf
+*.ldf
+*.db-shm
+*.db-wal
+
+## Các file nén hoặc backup
+*.zip
+*.rar
+*.tar.gz
+*.bak
+
+## Các file publish (nếu build ứng dụng)
+publish/
+>>>>>>> a3098b16071056029671d487354faa44b78fd105

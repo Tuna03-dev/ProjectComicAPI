@@ -1,0 +1,111 @@
+﻿@model IEnumerable<DotNetTruyen.Models.Advertisement>
+
+@{
+    ViewData["Title"] = "Quản Lý Quảng Cáo";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="card border-0 shadow-sm">
+        <div class="card-header bg-pink text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Quản Lý Quảng Cáo</h4>
+            <a asp-action="Create" class="btn btn-light btn-sm">
+                <i class="fas fa-plus"></i> Thêm Mới
+            </a>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="bg-dark text-white">
+                    <tr>
+                        <th class="py-3">Vị Trí</th>
+                        <th class="py-3">Liên Kết</th>
+                        <th class="py-3">Hình Ảnh</th>
+                        <th class="py-3">Ngày Tạo</th>
+                        <th class="py-3 text-end">Hành Động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.Title)</td>
+                            <td class="align-middle">
+                                <a href="@item.LinkTo" target="_blank" class="text-decoration-none text-pink">
+                                    @Html.DisplayFor(modelItem => item.LinkTo)
+                                </a>
+                            </td>
+                            <td class="align-middle">
+                                <img src="@item.ImageUrl" alt="@item.Title" style="max-width: 80px; height: auto;" class="rounded" />
+                            </td>
+                            <td class="align-middle">@Html.DisplayFor(modelItem => item.CreatedAt)</td>
+                            <td class="align-middle text-end">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-warning btn-sm me-1">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info btn-sm me-1">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .bg-pink {
+        background-color: #0d6efd; /* Thay màu hồng bằng màu xanh của Bootstrap */
+    }
+
+    .bg-dark {
+        background-color: #141414; /* Giữ nguyên màu tối */
+    }
+
+    .text-pink {
+        color: #0d6efd; /* Thay màu chữ hồng bằng màu xanh của Bootstrap */
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+        font-family: 'Urbanist', sans-serif;
+    }
+
+    .btn-outline-warning, .btn-outline-info, .btn-outline-danger {
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .btn-outline-warning:hover {
+        background-color: #ffca2c;
+        color: #141414;
+    }
+
+    .btn-outline-info:hover {
+        background-color: #31d2f2;
+        color: #141414;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #ff4d4f;
+        color: #141414;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('table').DataTable({
+                "paging": true,
+                "searching": true,
+                "ordering": true,
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.21/i18n/Vietnamese.json"
+                }
+            });
+        });
+    </script>
+}

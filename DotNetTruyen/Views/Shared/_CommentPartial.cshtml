@@ -1,0 +1,51 @@
+﻿@using System.Security.Claims
+@using DotNetTruyen.Services
+@model List<Comment>
+
+<ul class="list-unstyled mb-0">
+    @foreach (var comment in Model)
+    {
+        <li class="comment mb-4" data-comment-id="@comment.Id">
+            <div class="card bg-dark text-white border-secondary rounded-3 p-4">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <div>
+                        <p class="fw-bold mb-0">@comment.User.UserName <span class="text-info">(@comment.UserLevel)</span></p>
+                        <p class="text-muted fs-sm">
+                            <i class="far fa-clock me-1"></i>
+                            @TimeAgoHelper.TimeAgo(comment.Date)
+                        </p>
+                    </div>
+                </div>
+                <p class="text-light ms-4 comment-content">@comment.Content</p>
+                <div class="text-end mt-2 d-flex justify-content-end gap-2">
+                    <!-- Reply and View Replies buttons -->
+                    <button class="reply-btn btn btn-link text-primary text-decoration-underline p-0 fs-sm" data-comment-id="@comment.Id">
+                        <i class="fas fa-reply me-1"></i>Phản hồi
+                    </button>
+                    @if (comment.ReplyCount > 0)
+                    {
+                        <button class="view-replies-btn btn btn-link text-primary text-decoration-underline p-0 fs-sm" data-comment-id="@comment.Id">
+                            Xem phản hồi
+                        </button>
+                        <span class="text-primary">(@comment.ReplyCount)</span>
+                    }
+                    <!-- Edit and Delete buttons (visible only to the comment's author or admin) -->
+                    @{
+                        var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                        var isAdmin = User.IsInRole("Admin");
+                        if (comment.UserId.ToString() == currentUserId || isAdmin)
+                        {
+                            <button class="edit-btn btn btn-link text-warning text-decoration-underline p-0 fs-sm" data-comment-id="@comment.Id">
+                                <i class="fas fa-edit me-1"></i>Sửa
+                            </button>
+                            <button class="delete-btn btn btn-link text-danger text-decoration-underline p-0 fs-sm" data-comment-id="@comment.Id">
+                                <i class="fas fa-trash-alt me-1"></i>Xóa
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+            <div class="ms-4 mt-3 replies-container hiddenReply"></div>
+        </li>
+    }
+</ul>

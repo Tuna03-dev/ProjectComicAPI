@@ -1,0 +1,130 @@
+﻿@model DotNetTruyen.ViewModels.Management.LevelIndexViewModel
+
+@{
+    ViewData["Title"] = "Quản lý cấp độ";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<h1 class="mb-4">Danh sách cấp độ</h1>
+
+
+
+
+<!-- Search & Add -->
+<div class="d-flex justify-content-between align-items-center mb-2 mt-4">
+    <form method="get" asp-action="Index" class="d-flex align-items-center">
+        <div class="search-wrapper">
+            <i data-feather="search" aria-hidden="true"></i>
+            <input type="text" name="searchQuery" value="@Model.SearchQuery" placeholder="Tìm kiếm theo cấp độ hoặc tên..." required>
+            <button type="submit" class="btn btn-primary ms-2">Tìm kiếm</button>
+        </div>
+    </form>
+
+    <a asp-action="Create" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Thêm cấp độ mới
+    </a>
+</div>
+
+<!-- Levels Table -->
+<div class="card shadow-sm border-0">
+    <div class="card-body">
+        @if (Model.Levels == null || !Model.Levels.Any())
+        {
+            <div class="text-center mt-4">
+                <span class="badge bg-warning text-dark p-3">Không có cấp độ nào được tìm thấy</span>
+            </div>
+        }
+        else
+        {
+            <div class="users-table table-wrapper">
+                <table class="posts-table">
+                    <thead>
+                        <tr class="users-table-info">
+                            <th>
+                                <label class="users-table__checkbox ms-20">
+                                    Cấp độ
+                                </label>
+                            </th>
+                            <th>Tên cấp độ</th>
+                            <th>Exp Required</th>
+                            <th>Số người dùng</th>
+                            <th>Cập nhật lần cuối</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Levels)
+                        {
+                            <tr id="level-@item.Id">
+                                <td>
+                                    <label class="users-table__checkbox">
+                                        <div class="categories-table-img">
+                                            @Html.DisplayFor(modelItem => item.LevelNumber)
+                                        </div>
+                                    </label>
+                                </td>
+                                <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ExpRequired)</td>
+                                <td>@Html.DisplayFor(modelItem => item.UserCount)</td>
+                                <td>@item.UpdatedAt.Value.ToString("MM/dd/yyyy hh:mm:ss tt")</td>
+                                <td>
+                                    <span class="p-relative">
+                                        <button class="dropdown-btn transparent-btn" type="button" title="Thêm tùy chọn">
+                                            <div class="sr-only">Thêm tùy chọn</div>
+                                            <i data-feather="more-horizontal" aria-hidden="true"></i>
+                                        </button>
+                                        <ul class="users-item-dropdown dropdown">
+                                            <li><a asp-action="Edit" asp-route-id="@item.Id">Chỉnh sửa</a></li>
+                                            <li>
+                                                <form asp-action="Delete" asp-route-id="@item.Id" method="post" class="delete-form">
+                                                    <button type="button" class="btn-link text-danger delete-btn" data-id="@item.Id">Xóa</button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-end align-items-center mt-3">
+                <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage - 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == 1 ? "disabled" : "")">Trước</a>
+                <span class="badge bg-light text-dark border mx-3 px-3 py-2">Trang @Model.CurrentPage / @Model.TotalPages</span>
+                <a asp-action="Index" asp-route-searchQuery="@Model.SearchQuery" asp-route-page="@(Model.CurrentPage + 1)" class="btn btn-outline-secondary btn-sm @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">Sau</a>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const form = this.closest(".delete-form");
+
+                    Swal.fire({
+                        title: "Bạn có chắc chắn?",
+                        text: "Cấp độ này sẽ bị xóa!",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        cancelButtonText: "Hủy",
+                        confirmButtonText: "Xóa"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}

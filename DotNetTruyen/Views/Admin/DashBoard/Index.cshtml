@@ -1,0 +1,372 @@
+﻿@model DotNetTruyen.ViewModels.Management.DashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_DashBoardLayout.cshtml";
+}
+
+<main class="main users chart-page" id="skip-target">
+    <div class="container">
+        <h2 class="main-title">Dashboard</h2>
+        <div class="row stat-cards">
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon primary">
+                        <i data-feather="book" aria-hidden="true"></i>
+                    </div>
+                    <div class="stat-cards-info">
+                        <p class="stat-cards-info__num">@Model.TotalComics</p>
+                        <p class="stat-cards-info__title">Tổng số truyện</p>
+                        <p class="stat-cards-info__progress">
+                            <span class="stat-cards-info__profit @(Model.ComicsChangePercentage >= 0 ? "success" : "danger")">
+                                <i data-feather="@(Model.ComicsChangePercentage >= 0 ? "trending-up" : "trending-down")" aria-hidden="true"></i>
+                                @Model.ComicsChangePercentage.ToString("F2")%
+                            </span>
+                            Tháng trước
+                        </p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon warning">
+                        <i data-feather="file-text" aria-hidden="true"></i>
+                    </div>
+                    <div class="stat-cards-info">
+                        <p class="stat-cards-info__num">@Model.TotalChapters</p>
+                        <p class="stat-cards-info__title">Tổng số chương</p>
+                        <p class="stat-cards-info__progress">
+                            <span class="stat-cards-info__profit @(Model.ChaptersChangePercentage >= 0 ? "success" : "danger")">
+                                <i data-feather="@(Model.ChaptersChangePercentage >= 0 ? "trending-up" : "trending-down")" aria-hidden="true"></i>
+                                @Model.ChaptersChangePercentage.ToString("F2")%
+                            </span>
+                            Tháng trước
+                        </p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon purple">
+                        <i data-feather="eye" aria-hidden="true"></i>
+                    </div>
+                    <div class="stat-cards-info">
+                        <p class="stat-cards-info__num">@Model.TotalViews.ToString("N0")</p>
+                        <p class="stat-cards-info__title">Tổng lượt xem</p>
+                        <p class="stat-cards-info__progress">
+                            <span class="stat-cards-info__profit @(Model.ViewsChangePercentage >= 0 ? "success" : "danger")">
+                                <i data-feather="@(Model.ViewsChangePercentage >= 0 ? "trending-up" : "trending-down")" aria-hidden="true"></i>
+                                @Model.ViewsChangePercentage.ToString("F2")%
+                            </span>
+                            Tháng trước
+                        </p>
+                    </div>
+                </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+                <article class="stat-cards-item">
+                    <div class="stat-cards-icon success">
+                        <i data-feather="users" aria-hidden="true"></i>
+                    </div>
+                    <div class="stat-cards-info">
+                        <p class="stat-cards-info__num">@Model.TotalUsers</p>
+                        <p class="stat-cards-info__title">Tổng người dùng</p>
+                        <p class="stat-cards-info__progress">
+                            <span class="stat-cards-info__profit @(Model.UsersChangePercentage >= 0 ? "success" : "danger")">
+                                <i data-feather="@(Model.UsersChangePercentage >= 0 ? "trending-up" : "trending-down")" aria-hidden="true"></i>
+                                @Model.UsersChangePercentage.ToString("F2")%
+                            </span>
+                            Tháng trước
+                        </p>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                @* <div class="chart mb-4">
+                    <canvas id="viewsChart" aria-label="Views statistics" role="img"></canvas>
+                </div> *@
+                <div class="users-table table-wrapper">
+                    <h3 class="mt-4 mb-3">Chương gần đây</h3>
+                    @if (!Model.RecentChapters.Any())
+                    {
+                        <div class="text-center mt-4">
+                            <span class="badge bg-warning text-dark p-3">Chưa có chương nào</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <table class="posts-table">
+                            <thead>
+                                <tr class="users-table-info">
+                                    <th>
+                                        <label class="users-table__checkbox ms-20">
+                                            Hình ảnh
+                                        </label>
+                                    </th>
+                                    <th>Tên chương</th>
+                                    <th>Tên truyện</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày đăng</th>
+                                    <th>Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var chapter in Model.RecentChapters)
+                                {
+                                    <tr>
+                                        <td>
+                                            <label class="users-table__checkbox">
+                                                <div class="categories-table-img">
+                                                    <img src="@(chapter.Thumbnail ?? "/images/default-thumbnail.jpg")" alt="@chapter.ChapterTitle" style="width: 50px; height: 50px; object-fit: cover;" />
+                                                </div>
+                                            </label>
+                                        </td>
+                                        <td>@chapter.ChapterTitle</td>
+                                        <td>@chapter.ComicTitle</td>
+                                        <td>
+                                            @if (chapter.IsPublished)
+                                            {
+                                                if (chapter.PublishedDate > DateTime.UtcNow)
+                                                {
+                                                    <span class="badge-pending">Lên lịch</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge-active">Đã đăng</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <span class="badge-secondary">Chưa đăng</span>
+                                            }
+                                        </td>
+                                        <td>@(chapter.PublishedDate?.ToString("dd/MM/yyyy") ?? "Chưa có")</td>
+                                        <td>
+                                            <span class="p-relative">
+                                                <button class="dropdown-btn transparent-btn" type="button" title="More info">
+                                                    <div class="sr-only">More info</div>
+                                                    <i data-feather="more-horizontal" aria-hidden="true"></i>
+                                                </button>
+                                                <ul class="users-item-dropdown dropdown">
+                                                    <li><a asp-controller="Chapters" asp-action="Edit" asp-route-id="@chapter.Id">Chỉnh sửa</a></li>
+                                                    <li>
+                                                        <form asp-controller="Chapters" asp-action="Delete" asp-route-id="@chapter.Id" method="post" class="delete-form" data-id="@chapter.Id">
+                                                            @Html.AntiForgeryToken()
+                                                            <button type="button" class="btn-link delete-btn text-danger">Xóa</button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <article class="customers-wrapper mb-4">
+                    <h5 class="m-2 text-white">Trạng thái chương</h5>
+                    <canvas id="statusChart" aria-label="Chapter status" role="img"></canvas>
+                </article>
+                <article class="white-block">
+                    <div class="top-cat-title">
+                        <h3>Thể loại nổi bật</h3>
+                        <p>@Model.TotalComics Truyện, @Model.TotalChapters Chương</p>
+                    </div>
+                    @if (!Model.TopGenres.Any())
+                    {
+                        <p class="text-muted">Chưa có thể loại nào</p>
+                    }
+                    else
+                    {
+                        <ul class="top-cat-list">
+                            @foreach (var genre in Model.TopGenres)
+                            {
+                                <li>
+                                    <a href="##">
+                                        <div class="top-cat-list__title">
+                                            @genre.GenreName <span>@genre.ComicCount</span>
+                                        </div>
+                                        <div class="top-cat-list__subtitle">
+                                            @genre.ComicCount truyện <span class="purple">+@genre.NewComics</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </article>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    <!-- Thêm Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Thêm plugin datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+    <!-- Thêm SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Thêm SignalR (nếu cần) -->
+    <script src="~/lib/signalr/signalr.js"></script>
+
+    <script>
+        // Biểu đồ lượt xem
+        var ctx = document.getElementById('viewsChart');
+        if (ctx) {
+            var myCanvas = ctx.getContext('2d');
+            var myChart = new Chart(myCanvas, {
+                type: 'line',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.ViewsByMonthLabels)),
+                    datasets: [{
+                        label: '6 tháng gần nhất',
+                        data: @Html.Raw(Json.Serialize(Model.ViewsByMonthData)),
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4,
+                        backgroundColor: ['rgba(95, 46, 234, 1)'],
+                        borderColor: ['rgba(95, 46, 234, 1)'],
+                        borderWidth: 2
+                    }, {
+                        label: '6 tháng trước đó',
+                        data: @Html.Raw(Json.Serialize(Model.PreviousViewsByMonthData)),
+                        cubicInterpolationMode: 'monotone',
+                        tension: 0.4,
+                        backgroundColor: ['rgba(75, 222, 151, 1)'],
+                        borderColor: ['rgba(75, 222, 151, 1)'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: Math.max(...@Html.Raw(Json.Serialize(Model.ViewsByMonthData)), ...@Html.Raw(Json.Serialize(Model.PreviousViewsByMonthData))) * 1.2 || 100,
+                            ticks: {
+                                stepSize: 25
+                            },
+                            grid: {
+                                display: false
+                            }
+                        },
+                        x: {
+                            grid: {
+                                color: '#ebedf2'
+                            }
+                        }
+                    },
+                    elements: {
+                        point: {
+                            radius: 2
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            align: 'end',
+                            labels: {
+                                boxWidth: 8,
+                                boxHeight: 8,
+                                usePointStyle: true,
+                                font: {
+                                    size: 12,
+                                    weight: '500'
+                                }
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: ['Thống kê lượt xem', '6 tháng gần nhất vs trước đó'],
+                            align: 'start',
+                            color: '#171717',
+                            font: {
+                                size: 16,
+                                family: 'Inter',
+                                weight: '600',
+                                lineHeight: 1.4
+                            }
+                        }
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    }
+                }
+            });
+        }
+
+        // Biểu đồ trạng thái chương
+        const totalPublished = @Model.RecentChapters.Count(c => c.IsPublished);
+        const totalUnpublished = @Model.RecentChapters.Count(c => !c.IsPublished);
+        const statusCtx = document.getElementById('statusChart');
+        if (statusCtx) {
+            const statusCanvas = statusCtx.getContext('2d');
+            const statusChart = new Chart(statusCanvas, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Đã đăng', 'Chưa đăng'],
+                    datasets: [{
+                        data: [totalPublished, totalUnpublished],
+                        backgroundColor: ['#36b9cc', '#e74a3b']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#ffffff'
+                            }
+                        },
+                        datalabels: {
+                            color: '#fff', 
+                            formatter: (value, context) => {
+                                const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(1); 
+                                return `${value} (${percentage}%)`; 
+                            },
+                            font: {
+                                weight: 'bold',
+                                size: 14
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const form = this.closest('form');
+                    const chapterId = form.getAttribute('data-id');
+
+                    Swal.fire({
+                        title: 'Bạn có chắc chắn không?',
+                        text: `Bạn muốn xóa chương này?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Có, xóa nó!',
+                        cancelButtonText: 'Hủy'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+}
